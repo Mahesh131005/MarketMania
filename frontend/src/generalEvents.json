@@ -1,0 +1,846 @@
+[
+  {
+    "event": "Union Budget announced",
+    "sectorImpact": {
+      "Infrastructure": 7,
+      "PSU Banks": 6,
+      "Healthcare": 3
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID lockdown",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season sales boom",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  },
+  {
+    "event": "Government announces new infrastructure push",
+    "sectorImpact": {
+      "Infrastructure": 8,
+      "Cement": 6,
+      "PSU Banks": 4
+    }
+  },
+  {
+    "event": "Crude oil prices surge globally",
+    "sectorImpact": {
+      "Oil & Gas": 10,
+      "Airlines": -12,
+      "Logistics": -8
+    }
+  },
+  {
+    "event": "COVID-like lockdown imposed",
+    "sectorImpact": {
+      "Pharma": 12,
+      "IT": 5,
+      "Airlines": -15,
+      "Hotels": -10
+    }
+  },
+  {
+    "event": "Festive season boosts consumer demand",
+    "sectorImpact": {
+      "FMCG": 8,
+      "Retail": 10,
+      "E-commerce": 12
+    }
+  },
+  {
+    "event": "RBI cuts interest rates",
+    "sectorImpact": {
+      "Banks": 5,
+      "Real Estate": 7,
+      "Automobiles": 4
+    }
+  },
+  {
+    "event": "RBI raises interest rates",
+    "sectorImpact": {
+      "Banks": -6,
+      "Real Estate": -8,
+      "Automobiles": -5
+    }
+  },
+  {
+    "event": "Budget focuses on healthcare spending",
+    "sectorImpact": {
+      "Healthcare": 10,
+      "Pharma": 7,
+      "Insurance": 5
+    }
+  },
+  {
+    "event": "Budget increases defense allocation",
+    "sectorImpact": {
+      "Defense": 12,
+      "Aerospace": 8,
+      "IT": 3
+    }
+  },
+  {
+    "event": "Technology adoption wave",
+    "sectorImpact": {
+      "IT": 9,
+      "Digital Payments": 8,
+      "E-commerce": 6
+    }
+  },
+  {
+    "event": "Natural disaster disrupts supply chains",
+    "sectorImpact": {
+      "Logistics": -8,
+      "Automobiles": -6,
+      "Retail": -5
+    }
+  }
+
+]

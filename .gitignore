@@ -1,0 +1,45 @@
+# =================
+# Java / JVM
+# =================
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.log
+*.tmp
+*.out
+*.class
+target/
+bin/
+build/
+
+# Eclipse / IntelliJ IDEA
+/.idea/
+/*.ipr
+/*.iws
+/.classpath
+/.project
+
+# =================
+# Node / React
+# =================
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+.env
+.DS_Store
+
+# =================
+# OS / Editor
+# =================
+*.swp
+*~
+*.bak
+*.tmp
+*.swo
+.DS_Store
+Thumbs.db
+GameArena.jsx

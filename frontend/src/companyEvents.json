@@ -1,0 +1,2502 @@
+[
+  {
+    "company": "Reliance Industries",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Reliance Industries",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "HDFC Bank",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "ICICI Bank",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Infosys",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Infosys",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Infosys",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Infosys",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Infosys",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Infosys",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Infosys",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Infosys",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Infosys",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Infosys",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Bharti Airtel",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Larsen & Toubro",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "ITC",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "ITC",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "ITC",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "ITC",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "ITC",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "ITC",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "ITC",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "ITC",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "ITC",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "ITC",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Tata Consultancy Services",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "State Bank of India",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Axis Bank",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Bajaj Finance",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Hindustan Unilever",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Maruti Suzuki",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Mahindra & Mahindra",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Kotak Bank",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Sun Pharmaceutical",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "HCL Technologies",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "UltraTech Cement",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Adani Ports",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Apollo Hospitals",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Asian Paints",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Bajaj Auto",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Bajaj Finserv",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Bharat Electronics",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Cipla",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Cipla",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Cipla",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Cipla",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Cipla",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Cipla",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Cipla",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Cipla",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Cipla",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Cipla",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Coal India",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Coal India",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Coal India",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Coal India",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Coal India",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Coal India",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Coal India",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Coal India",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Coal India",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Coal India",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Dr. Reddy's Laboratories",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Eicher Motors",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Grasim Industries",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "HDFC Life Insurance",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Hero MotoCorp",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Hindalco Industries",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "IndusInd Bank",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Jio Financial Services",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "JSW Steel",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Nestle India",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "NTPC",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "NTPC",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "NTPC",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "NTPC",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "NTPC",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "NTPC",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "NTPC",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "NTPC",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "NTPC",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "NTPC",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "ONGC",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "ONGC",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "ONGC",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "ONGC",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "ONGC",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "ONGC",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "ONGC",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "ONGC",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "ONGC",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "ONGC",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Power Grid Corporation of India",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "SBI Life Insurance",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 5 }
+  },
+  {
+    "company": "Shriram Finance",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Tata Consumer Products",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -10 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Tata Motors",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -9 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -12 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Tata Steel",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -3 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Tech Mahindra",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "reports weaker-than-expected earnings",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Titan Company",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Trent",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Trent",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Trent",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Trent",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Trent",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 9 }
+  },
+  {
+    "company": "Trent",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": -4 }
+  },
+  {
+    "company": "Trent",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Trent",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Trent",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Trent",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 11 }
+  },
+  {
+    "company": "Wipro",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Wipro",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Wipro",
+    "event": "announces strong quarterly results",
+    "impact": { "priceChange": 8 }
+  },
+  {
+    "company": "Wipro",
+    "event": "faces regulatory scrutiny from SEBI",
+    "impact": { "priceChange": 12 }
+  },
+  {
+    "company": "Wipro",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": 2 }
+  },
+  {
+    "company": "Wipro",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -5 }
+  },
+  {
+    "company": "Wipro",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Wipro",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Wipro",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -11 }
+  },
+  {
+    "company": "Wipro",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Zomato",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Zomato",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": 4 }
+  },
+  {
+    "company": "Zomato",
+    "event": "cybersecurity/data breach incident",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Zomato",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 0 }
+  },
+  {
+    "company": "Zomato",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Zomato",
+    "event": "announces dividend payout to shareholders",
+    "impact": { "priceChange": 3 }
+  },
+  {
+    "company": "Zomato",
+    "event": "faces temporary operational shutdown",
+    "impact": { "priceChange": -7 }
+  },
+  {
+    "company": "Zomato",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Zomato",
+    "event": "expands into international markets",
+    "impact": { "priceChange": 1 }
+  },
+  {
+    "company": "Zomato",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "launches an innovative new product",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "share buyback program announced",
+    "impact": { "priceChange": -8 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "hit by global commodity price changes",
+    "impact": { "priceChange": -6 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "benefits from government policy support",
+    "impact": { "priceChange": 10 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "expands into international markets",
+    "impact": { "priceChange": -2 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "partners with foreign companies",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "large foreign institutional investment inflow",
+    "impact": { "priceChange": 7 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "faces labor strikes or employee protests",
+    "impact": { "priceChange": -1 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "management changes at senior level",
+    "impact": { "priceChange": 6 }
+  },
+  {
+    "company": "Adani Enterprises",
+    "event": "announces major acquisition or merger",
+    "impact": { "priceChange": 0 }
+  }
+]
