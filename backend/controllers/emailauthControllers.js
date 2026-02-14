@@ -7,7 +7,8 @@ import {
   getUserById,
   setUserActiveStatus
 } from '../config/loginAndRegisterQueries.js';
-
+import { sql } from '../config/initailiseDatabase.js';
+//import { config } from './../../frontend/node_modules/use-sidecar/dist/es2015/config';
 // ✅ Password validation logic (unchanged)
 const validatePassword = (password) => {
   const minLength = 8;

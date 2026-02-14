@@ -8,13 +8,11 @@ import session from 'express-session';
 import { Server } from 'socket.io';
 import http from 'http';
 
-
 import googleauthRoutes from "./routes/googleauthRoutes.js";
 import emailauthRoutes from "./routes/emailauthRoutes.js";
 import { configurePassport } from "./controllers/googleauthControllers.js";
 import gameRoutes from "./routes/gameRoutes.js";
-import userRoutes from "./routes/userRoutes.js"; // Corrected import
-
+import userRoutes from "./routes/userRoutes.js";
 
 import { logoutUser } from "./controllers/userControllers.js";
 import { initialiseDatabase, sql } from "./config/initailiseDatabase.js";
@@ -22,7 +20,6 @@ import { initialiseDatabase, sql } from "./config/initailiseDatabase.js";
 import COMPANY_EVENTS from "../frontend/src/companyEvents.json" with { type: "json" };
 import GENERAL_EVENTS from "../frontend/src/generalEvents.json" with { type: "json" };
 import HISTORICAL_EVENTS from "../frontend/src/eventsforall.json" with { type: "json" };
-
 
 dotenv.config();
 
@@ -36,60 +33,38 @@ const io = new Server(server, {
   }
 });
 
-
 configurePassport();
-
 initialiseDatabase();
-
-//sessions
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'random string',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // set true only if using https
+  cookie: { secure: false }
 }));
 
-// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-// JSON request parsing
 app.use(express.json());
-
-//cors enables communication 
-app.use(
-  cors({
+app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true,
-  })
-);
-
-
-
-
-// Helmet for security
+}));
 app.use(helmet());
-
-// HTTP request logging
 app.use(morgan("dev"));
 
-
-
 const PORT = process.env.PORT || 3000;
-
 const gameStates = {};
 
+// Helper to run market events (Same as before)
 const runMarketEvents = (gameId) => {
   const gameState = gameStates[gameId];
   if (!gameState) return;
 
-  // First, apply price changes from last round's events
   if (gameState.roundEvents) {
     let updatedStocks = gameState.stocks;
     gameState.roundEvents.forEach(event => {
-      if (event.company) { // Company event
+      if (event.company) {
         updatedStocks = updatedStocks.map((stock) => {
           if (stock.name === event.company) {
             const priceChangePercentage = event.impact.priceChange / 100;
@@ -97,7 +72,7 @@ const runMarketEvents = (gameId) => {
           }
           return stock;
         });
-      } else if (event.sectorImpact) { // General/Historical event with sectorImpact
+      } else if (event.sectorImpact) {
         updatedStocks = updatedStocks.map((stock) => {
           let priceChangePercentage = event.movePercent || 0;
           let sectorAffected = false;
@@ -127,7 +102,6 @@ const runMarketEvents = (gameId) => {
     io.to(gameId).emit('price-update', updatedStocks);
   }
 
-  // Now, generate new events for the current round
   let notices = [];
   let newEvents = [];
   for (let i = 0; i < 5; i++) {
@@ -153,21 +127,10 @@ const runMarketEvents = (gameId) => {
   io.to(gameId).emit('news-update', notices);
 }
 
-
-
-app.get("/", (req, res) => {
-  res.send("hello from the server route");
-});
-
-
-// Authentication routes
 app.use("/api/googleauth", googleauthRoutes);
 app.use("/api/emailauth", emailauthRoutes);
-
 app.use("/api/game", gameRoutes);
-app.use("/api/user", userRoutes); // Added this line to use the new routes
-
-
+app.use("/api/user", userRoutes);
 app.post("/api/auth/logoutuser", logoutUser);
 
 io.on('connection', (socket) => {
@@ -175,46 +138,35 @@ io.on('connection', (socket) => {
 
   socket.on('join-lobby', (roomId) => {
     socket.join(roomId);
-    console.log(`user ${socket.id} joined room ${roomId}`);
-
-    // Notify others
     socket.to(roomId).emit('player-joined');
-
-    // ✅ FIX: Send current round to the user who just joined
+    // Sync state if game is running
     if (gameStates[roomId]) {
-      socket.emit('sync-state', {
-        round: gameStates[roomId].round,
-        // Add other sync data here if needed (e.g., stocks)
-      });
+      socket.emit('sync-state', { round: gameStates[roomId].round });
     }
   });
-  //
-  socket.on('send-message', (data) => {
-    // data includes: gameId, userId, username, text, roundNumber
-    // We need to fetch the avatar to broadcast it immediately, 
-    // OR the frontend can fetch profile, but let's query DB quickly or pass it in data if stored locally
 
-    // Broadcast to everyone in the room
-    io.to(data.gameId).emit('receive-message', data);
+  socket.on('send-message', (data) => {
+    // Add timestamp for the frontend
+    const msgWithTime = { ...data, created_at: new Date().toISOString() };
+    io.to(data.gameId).emit('receive-message', msgWithTime);
   });
-  //
+
   socket.on('start-game', async (roomId) => {
-    if (gameStates[roomId] && gameStates[roomId].interval) {
-      console.log(`Game ${roomId} is already in progress.`);
-      return;
-    }
+    if (gameStates[roomId]) return;
 
     io.to(roomId).emit('game-started');
+    
+    // Update DB status to 'in_progress'
+    await sql`UPDATE games SET game_status = 'in_progress' WHERE game_id = ${roomId}`;
 
     try {
       const roomSettingsRes = await sql`SELECT round_time, num_rounds FROM game_rooms WHERE room_id = ${roomId}`;
-      if (roomSettingsRes.length === 0) {
-        console.error(`Attempted to start game for non-existent room: ${roomId}`);
-        return;
-      }
+      if (roomSettingsRes.length === 0) return;
+      
       const settings = roomSettingsRes[0];
-      const roundTimeMs = settings.round_time * 1000;
+      const roundTimeMs = settings.round_time * 1000; // e.g., 30000ms
       const numRounds = settings.num_rounds;
+      const breakTimeMs = 6000; // 6 seconds break for leaderboard
 
       const stocks = await sql`SELECT * FROM game_stocks WHERE game_id = ${roomId}`;
       const companyNames = new Set(stocks.map(c => c.stock_name));
@@ -231,48 +183,53 @@ io.on('connection', (socket) => {
           volatility: parseFloat(s.volatility)
         })),
         companyEvents: filteredCompanyEvents,
-        interval: null,
-        roundEvents: null
+        roundEvents: null,
+        timeout: null // Using timeout instead of interval
       };
 
-      const gameLoop = () => {
+      const runRound = () => {
         const gameState = gameStates[roomId];
-        if (!gameState) {
-          if (gameStates[roomId] && gameStates[roomId].interval) clearInterval(gameStates[roomId].interval);
-          return;
-        }
+        if (!gameState) return;
 
         gameState.round++;
 
         if (gameState.round > numRounds) {
-          console.log(`Game ${roomId} finished.`);
-          clearInterval(gameState.interval);
           io.to(roomId).emit('game-over');
+          sql`UPDATE games SET game_status = 'finished' WHERE game_id = ${roomId}`;
           delete gameStates[roomId];
           return;
         }
 
-        console.log(`Running round ${gameState.round} for game ${roomId}`);
+        // Start Round
+        console.log(`Starting Round ${gameState.round} for ${roomId}`);
         io.to(roomId).emit('new-round', gameState.round);
         runMarketEvents(roomId);
+
+        // Schedule End of Round (Break)
+        gameState.timeout = setTimeout(() => {
+          console.log(`Round ${gameState.round} ended. Showing leaderboard.`);
+          io.to(roomId).emit('round-ended'); // Triggers leaderboard on frontend
+          
+          // Schedule Next Round
+          gameState.timeout = setTimeout(() => {
+            runRound();
+          }, breakTimeMs);
+          
+        }, roundTimeMs);
       };
 
-      setTimeout(() => {
-        gameLoop();
-        gameStates[roomId].interval = setInterval(gameLoop, roundTimeMs);
-      }, 1000);
+      // Start the first round immediately
+      runRound();
 
     } catch (error) {
       console.error(`Error starting game ${roomId}:`, error);
     }
   });
 
-
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+   console.log('user disconnected');//just for now
   });
 });
-
 
 server.listen(PORT, () => {
   console.log("server is running on port 3000");

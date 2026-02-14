@@ -9,12 +9,14 @@ import {
   submitFinalScore,
   getFinalLeaderboard,
   getGameLobby,
+  getPublicRooms,
   getGameStocks
 } from '../controllers/gameControllers.js';
-
+import { askAI } from "../controllers/gameControllers.js";
 const router = express.Router();
 
 // Room management routes
+
 router.post('/create', createRoom);
 router.post('/join', joinGame);
 
@@ -31,6 +33,9 @@ router.get('/:gameId/final-leaderboard', getFinalLeaderboard);
 // Game data routes
 router.get('/:gameId/lobby', getGameLobby);
 router.get('/:gameId/stocks', getGameStocks);
+
+router.get('/public', getPublicRooms); // NEW
+router.post('/learn', askAI); // NEW
 
 
 export default router;

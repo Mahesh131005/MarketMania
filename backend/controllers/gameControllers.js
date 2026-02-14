@@ -1,8 +1,8 @@
 import { sql } from "../config/initailiseDatabase.js";
 import ALL_COMPANIES from "../../frontend/src/Companysectors.json" with { type: "json" };
-//
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-//
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const shuffleArray = (array) => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -12,94 +12,54 @@ const shuffleArray = (array) => {
   return newArray;
 };
 
+// ... createRoom (keep existing code) ...
 export const createRoom = async (req, res) => {
+  // ... (Keep existing implementation) ...
+  // Ensure you include the existing createRoom code here
   try {
-
-    const {
-      roomID,
-      name: room_name,
-      numStocks,
-      roundTime,
-      maxPlayers,
-      initialMoney,
-      numRounds,
-      createdBy, // user_id of the creator
-    } = req.body;
-    console.log(roomID + "from backend");
-    if (!roomID || !room_name || !numStocks || !roundTime || !maxPlayers || !initialMoney || !numRounds || !createdBy) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-    console.log("ALL filelds corect");
-    // ✅ Check if creator exists
+    const { roomID, name: room_name, numStocks, roundTime, maxPlayers, initialMoney, numRounds, createdBy } = req.body;
+    
+    // ... validation ...
     const userExists = await sql`SELECT * FROM users WHERE user_id = ${createdBy}`;
-    if (userExists.length === 0) {
-      return res.status(400).json({ message: "Creator user does not exist" });
-    }
+    if (userExists.length === 0) return res.status(400).json({ message: "Creator user does not exist" });
 
-    // 1️⃣ Insert into game_rooms
-    await sql`
-      INSERT INTO game_rooms 
-        (room_id, room_name, num_stocks, round_time, max_players, initial_money, num_rounds, created_by) 
-      VALUES 
-        (${roomID}, ${room_name}, ${numStocks}, ${roundTime}, ${maxPlayers}, ${initialMoney}, ${numRounds}, ${createdBy})
-    `;
+    await sql`INSERT INTO game_rooms (room_id, room_name, num_stocks, round_time, max_players, initial_money, num_rounds, created_by) VALUES (${roomID}, ${room_name}, ${numStocks}, ${roundTime}, ${maxPlayers}, ${initialMoney}, ${numRounds}, ${createdBy})`;
+    await sql`INSERT INTO games (game_id, created_by_user_id) VALUES (${roomID}, ${createdBy})`;
+    await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${createdBy})`;
 
-    // 2️⃣ Insert into games table so participants can be added
-    await sql`
-      INSERT INTO games (game_id, created_by_user_id)
-      VALUES (${roomID}, ${createdBy})
-    `;
-
-    // 3️⃣ Add creator to participants
-    await sql`
-      INSERT INTO game_participants (game_id, user_id) 
-      VALUES (${roomID}, ${createdBy})
-    `;
-
-    // 4️⃣ Select and insert stocks for the game
     const selectedStocks = shuffleArray(ALL_COMPANIES).slice(0, numStocks);
     for (const stock of selectedStocks) {
-      await sql`
-        INSERT INTO game_stocks (game_id, stock_name, price, pe_ratio, sectors, total_volume, volatility)
-        VALUES (${roomID}, ${stock.name}, ${stock.price}, ${stock.pe}, ${stock.sectors}, ${stock.totalVolume}, ${stock.volatility})
-      `;
+      await sql`INSERT INTO game_stocks (game_id, stock_name, price, pe_ratio, sectors, total_volume, volatility) VALUES (${roomID}, ${stock.name}, ${stock.price}, ${stock.pe}, ${stock.sectors}, ${stock.totalVolume}, ${stock.volatility})`;
     }
-
 
     res.status(201).json({ success: true, roomID, message: "Room created successfully" });
   } catch (err) {
-    console.error("Error creating room:", err);
-    res.status(500).json({ success: false, message: "Server error while creating room" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
-// ✅ Join an existing room
+
 export const joinGame = async (req, res) => {
   try {
     const { roomID, userId } = req.body;
+    if (!roomID || !userId) return res.status(400).json({ message: "Missing fields" });
 
-    if (!roomID || !userId) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    // 1️⃣ Check if room exists
     const rooms = await sql`SELECT * FROM game_rooms WHERE room_id = ${roomID}`;
-    if (rooms.length === 0) {
-      return res.status(404).json({ exists: false, message: "Room not found" });
-    }
+    if (rooms.length === 0) return res.status(404).json({ exists: false, message: "Room not found" });
 
-    // 2️⃣ Add user to participants if not already
-    const participantCheck = await sql`
-      SELECT * FROM game_participants 
-      WHERE game_id = ${roomID} AND user_id = ${userId}
-    `;
+    // 1. Check Max Players
+    const participants = await sql`SELECT COUNT(*) FROM game_participants WHERE game_id = ${roomID}`;
+    const currentCount = parseInt(participants[0].count);
+    const maxPlayers = rooms[0].max_players;
+
+    const participantCheck = await sql`SELECT * FROM game_participants WHERE game_id = ${roomID} AND user_id = ${userId}`;
+    
     if (participantCheck.length === 0) {
-      await sql`
-        INSERT INTO game_participants (game_id, user_id) 
-        VALUES (${roomID}, ${userId})
-      `;
+        if (currentCount >= maxPlayers) {
+            return res.status(403).json({ exists: true, message: "Room is full!" });
+        }
+        await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
     }
 
-    // 3️⃣ Extract formatted data
     const room = rooms[0];
     const roomData = {
       createdBy: room.created_by,
@@ -112,20 +72,80 @@ export const joinGame = async (req, res) => {
       roundTime: String(room.round_time)
     };
 
-    // ✅ Respond in frontend-compatible format
-    res.status(200).json({
-      exists: true,
-      roomData
-    });
-
+    res.status(200).json({ exists: true, roomData });
   } catch (err) {
-    console.error("Error joining room:", err);
-    res.status(500).json({ message: "Server error while joining room" });
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
+// NEW: Get Public Rooms
+export const getPublicRooms = async (req, res) => {
+  try {
+    // Fetch rooms that are in 'waiting' status
+    const publicRooms = await sql`
+      SELECT gr.room_id, gr.room_name, gr.max_players, 
+             (SELECT COUNT(*) FROM game_participants gp WHERE gp.game_id = gr.room_id) as current_players
+      FROM game_rooms gr
+      JOIN games g ON gr.room_id = g.game_id
+      WHERE g.game_status = 'waiting'
+      ORDER BY g.created_at DESC
+      LIMIT 20
+    `;
+    res.status(200).json(publicRooms);
+  } catch (error) {
+    console.error("Error fetching public rooms:", error);
+    res.status(500).json({ error: "Failed to fetch rooms" });
+  }
+};
 
-// ✅ Add chat message to a game
+// NEW: Chat GPT Learning (Simulated)
+export const askAI = async (req, res) => {
+  try {
+
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        error: "UserId required"
+      });
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash-exp"
+    });
+
+    const prompt = `
+You are a stock market coach.
+
+Analyze this Market Mania player with userId: ${userId}
+
+Give:
+
+- strengths
+- weaknesses
+- mistakes
+- improvement suggestions
+- winning strategies
+`;
+
+    const result = await model.generateContent(prompt);
+
+    res.json({
+      answer: result.response.text()
+    });
+
+  } catch (error) {
+
+    console.error("Gemini error:", error);
+
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
 export const addChatMessage = async (req, res) => {
   try {
     const { gameId } = req.params;

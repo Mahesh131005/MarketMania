@@ -9,6 +9,8 @@ const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [stats, setStats] = useState({ gamesPlayed: 0, wins: 0, history: [] });
     const navigate = useNavigate();
+    const [aiResponse, setAiResponse] = useState("");
+    const [loadingAI, setLoadingAI] = useState(false);
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -38,6 +40,38 @@ const ProfilePage = () => {
         localStorage.removeItem("user");
         navigate("/login");
     };
+
+    ///
+    const handleStartLearning = async () => {
+    try {
+        setLoadingAI(true);
+        setAiResponse("");
+
+        const currentUser = JSON.parse(localStorage.getItem("user"));
+
+        const response = await fetch("http://localhost:3000/api/game/ask-ai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userId: currentUser.user_id
+            })
+        });
+
+        const data = await response.json();
+
+        setAiResponse(data.answer);
+
+    } catch (error) {
+        console.error("AI error:", error);
+        setAiResponse("Failed to get AI suggestions.");
+    } finally {
+        setLoadingAI(false);
+    }
+};
+
+    ///
 
     if (!user) {
         return <div>Loading...</div>;
@@ -104,10 +138,36 @@ const ProfilePage = () => {
                                 <CardTitle>Learning</CardTitle>
                             </CardHeader>
                             <CardContent>
-                               <Button className="bg-sky-600 hover:bg-sky-700 text-white">Start Learning</Button>
+                               <Button 
+    className="bg-sky-600 hover:bg-sky-700 text-white"
+    onClick={handleStartLearning}
+    disabled={loadingAI}
+>
+    {loadingAI ? "Analyzing..." : "Start Learning"}
+</Button>
+
                             </CardContent>
                         </Card>
                     </motion.div>
+ 
+{aiResponse && (
+    <motion.div 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        className="mb-8"
+    >
+        <Card className="border border-sky-100 shadow-lg rounded-2xl">
+            <CardHeader>
+                <CardTitle>AI Learning Suggestions</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <pre className="whitespace-pre-wrap text-gray-800">
+                    {aiResponse}
+                </pre>
+            </CardContent>
+        </Card>
+    </motion.div>
+)}
 
                     {/* Game History */}
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.6 }}>

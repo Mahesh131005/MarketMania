@@ -55,3 +55,22 @@ export const getUserProfile = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+///
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { fullName, avatar } = req.body; // Expecting avatar as emoji or string
+
+    await sql`
+      UPDATE users 
+      SET full_name = ${fullName}, avatar = ${avatar}
+      WHERE user_id = ${userId}
+    `;
+
+    res.status(200).json({ success: true, message: "Profile updated" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+};
+//  

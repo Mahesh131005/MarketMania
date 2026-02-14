@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 // Single-file homepage component for a multiplayer stock market game
 // Tailwind + shadcn UI + framer-motion
@@ -58,6 +59,7 @@ function Header() {
   return (
     <header className="bg-white/60 backdrop-blur sticky top-0 z-40 border-b border-sky-100">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo Section */}
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-gradient-to-tr from-sky-500 to-sky-400 text-white shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
@@ -70,20 +72,17 @@ function Header() {
           </div>
         </div>
 
+        {/* Nav Links */}
         <nav className="hidden md:flex items-center gap-6">
-          <a className="text-sm hover:text-slate-700">Home</a>
-          <a className="text-sm hover:text-slate-700">About Us</a>
-          <a className="text-sm hover:text-slate-700">How it works</a>
+          <Link to="/" className="text-sm hover:text-slate-700">Home</Link>
+          <Link to="/about" className="text-sm hover:text-slate-700">About Us</Link>
+          <Link to="/howto" className="text-sm hover:text-slate-700">How it works</Link>
         </nav>
 
+        {/* Auth Buttons */}
         <div className="flex items-center gap-3">
-          <Button className="hidden md:inline-flex" variant="ghost">  <a href="/login">Login</a></Button>
-          <Button className="hidden md:inline-flex" variant="default"><a href="/register">Register</a></Button>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <MobileMenu />
-          </div>
+           <Link to="/login"><Button className="hidden md:inline-flex" variant="ghost">Login</Button></Link>
+           <Link to="/register"><Button className="hidden md:inline-flex" variant="default">Register</Button></Link>
         </div>
       </div>
     </header>
