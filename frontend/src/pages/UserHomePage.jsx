@@ -5,8 +5,9 @@ import { Button } from "../components/ui/button";
 import { Home, User, BookOpen, Info, Phone, Gamepad2, LogOut } from "lucide-react";
 import CreateRoom from "./CreateRoom";
 import { motion } from "framer-motion";
-
+import { Link, useNavigate } from "react-router-dom"; // Added Navigate
 function UserHomePage() {
+  
   return (
     <div className="flex h-screen bg-gradient-to-br from-sky-50 to-white">
       {/* Sidebar */}

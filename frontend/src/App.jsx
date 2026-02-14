@@ -12,7 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import  {HowToPlay}  from "./pages/Howtoplay";
 import  {ContactUs}  from "./pages/ContactUs";
 import  {AboutUs}  from "./pages/AboutUs";
-
+import LearningPage from "./pages/LearningPage";
 function App() {
   return (
     <Router>
@@ -25,6 +25,7 @@ function App() {
          <Route path="/about" element={<AboutUs />} />
   <Route path="/contact" element={<ContactUs />} />
   <Route path="/howto" element={<HowToPlay />} />
+  <Route path="/learning" element={<LearningPage />} />
         {/* New Route for creating/joining a game */}
      {/*}   <Route path="/lobby" element={<GameLobby />} />*/}
 

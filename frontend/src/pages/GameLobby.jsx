@@ -56,11 +56,15 @@ export default function GameLobby({ roomSettings, roomID, onStartGame, onNavigat
     };
   }, [roomID, onStartGame, roomSettings]);
 
-  useEffect(() => {
-    if (timeLeft <= 0 && isHost) handleStartGame();
-    const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-    return () => clearInterval(timer);
-  }, [timeLeft, isHost]);
+  <div className="mb-8 text-center">
+  <div className="inline-block bg-gradient-to-r from-sky-500 to-indigo-600 rounded-2xl p-8 shadow-xl">
+    <p className="text-white text-sm uppercase tracking-wider mb-2">Status</p>
+    <div className="text-4xl font-bold text-white bg-white/20 rounded-xl px-8 py-4 shadow-inner">
+       Waiting for Host
+    </div>
+    <p className="text-white text-xs mt-3 opacity-80">Game starts when host clicks start</p>
+  </div>
+</div>
 
   const handleStartGame = () => {
     if (socket && isHost) socket.emit('start-game', roomID);

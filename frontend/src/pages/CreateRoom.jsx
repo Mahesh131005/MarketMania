@@ -110,7 +110,7 @@ export default function CreateRoom({ onRoomCreated }) {
               </div>
               <div>
                 <label className="font-semibold text-gray-700 text-sm">Round Time (s)</label>
-                <Input type="number" min="5" max="60" value={roomData.roundTime} onChange={e => handleChange("roundTime", e.target.value)} />
+                <Input type="number" min="30" max="300" value={roomData.roundTime} onChange={e => handleChange("roundTime", e.target.value)} />
               </div>
               <div>
                 <label className="font-semibold text-gray-700 text-sm">Max Players</label>
