@@ -299,7 +299,6 @@ io.on('connection', (socket) => {
     }
   });
 
-<<<<<<< HEAD
   socket.on('disconnect', async () => {
     console.log('user disconnected:', socket.id);
 
@@ -330,28 +329,23 @@ io.on('connection', (socket) => {
         console.error("Error handling disconnect cleanup:", err);
       }
     }
-=======
-  socket.on('disconnect', () => {
-    console.log('user disconnected');//just for now
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
   });
-});
 
 
-// ... (imports)
-import { updateGlobalStockPrices } from "./utils/stockFetcher.js";
+  // ... (imports)
+  import { updateGlobalStockPrices } from "./utils/stockFetcher.js";
 
-// ... (existing code)
+  // ... (existing code)
 
-server.listen(PORT, async () => {
-  console.log("server is running on port 3000");
+  server.listen(PORT, async () => {
+    console.log("server is running on port 3000");
 
-  // Trigger initial update in background
-  updateGlobalStockPrices().catch(err => console.error("Initial stock update failed:", err));
+    // Trigger initial update in background
+    updateGlobalStockPrices().catch(err => console.error("Initial stock update failed:", err));
 
-  // Schedule updates every 30 minutes (30 * 60 * 1000 ms)
-  setInterval(() => {
-    updateGlobalStockPrices().catch(err => console.error("Scheduled stock update failed:", err));
-  }, 30 * 60 * 1000);
-});
+    // Schedule updates every 30 minutes (30 * 60 * 1000 ms)
+    setInterval(() => {
+      updateGlobalStockPrices().catch(err => console.error("Scheduled stock update failed:", err));
+    }, 30 * 60 * 1000);
+  });
 
