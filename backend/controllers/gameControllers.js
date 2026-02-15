@@ -107,7 +107,6 @@ export const getPublicRooms = async (req, res) => {
 // NEW: Chat GPT Learning (Simulated)
 export const askAI = async (req, res) => {
   try {
-
     const { userId } = req.body;
 
     if (!userId) {
@@ -116,41 +115,93 @@ export const askAI = async (req, res) => {
       });
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    // 1. Fetch User's Last 5 Games
+    const history = await sql`
+      SELECT final_net_worth, final_rank, game_completed_at
+      FROM final_scores
+      WHERE user_id = ${userId}
+      ORDER BY game_completed_at DESC
+      LIMIT 5
+    `;
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp"
-    });
+    const historyText = history.length > 0
+      ? history.map((h, i) =>
+        `Game ${i + 1}: Rank ${h.final_rank}, Net Worth ${h.final_net_worth}`
+      ).join("\n")
+      : "No games played yet.";
 
     const prompt = `
-You are a stock market coach.
+You are a stock market coach in a game called Market Mania.
 
-Analyze this Market Mania player with userId: ${userId}
+Analyze this player's recent game history (last 5 games):
+${historyText}
 
-Give:
+Reply using **Markdown** so it displays nicely:
+- Use **bold** for key terms (e.g. **consistent**, **diversify**).
+- Use ## for a short section heading like "Your assessment" and "Tips to improve".
+- Use bullet lists (- item) for the 3 specific tips.
 
-- strengths
-- weaknesses
-- mistakes
-- improvement suggestions
-- winning strategies
+Include:
+1. A brief assessment of their performance trend (consistent, improving, or struggling).
+2. Three specific tips to improve their ranking and net worth.
+3. One high-level strategy suggestion (e.g. "Focus on high volatility stocks" or "Diversify more").
+
+Keep it concise (max 150 words) and encouraging.
 `;
 
-    const result = await model.generateContent(prompt);
+    // Try multiple free tier models
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const freeModels = [
+      "gemini-1.5-flash",
+      "gemini-2.5-flash",
+      "gemini-3-flash-preview",
+      "gemini-1.0-pro"
+    ];
+
+    let aiReply = null;
+
+    // Try each model until one succeeds
+    for (const modelName of freeModels) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        aiReply = result.response.text().trim();
+        console.log(`✅ Success with model: ${modelName}`);
+        break; // Exit loop on first success
+      } catch (err) {
+        console.warn(`❌ Model ${modelName} failed:`, err.message);
+      }
+    }
+
+    // If all models failed, return friendly message
+    if (!aiReply) {
+      aiReply = "Sorry, the AI coach is currently unavailable. Please try again later.";
+    }
 
     res.json({
-      answer: result.response.text()
+      answer: aiReply
     });
 
   } catch (error) {
-
-    console.error("Gemini error:", error);
-
+    console.error("Error in askAI:", error);
     res.status(500).json({
-      error: error.message
+      error: "Failed to generate advice"
     });
   }
 };
+
+// Debug endpoint to list available models
+export const listModels = async (req, res) => {
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const models = await genAI.listModels();
+    res.json({ models: models.map(m => ({ name: m.name, supportedMethods: m.supportedMethods })) });
+  } catch (error) {
+    console.error("Error listing models:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const addChatMessage = async (req, res) => {
   try {
     const { gameId } = req.params;

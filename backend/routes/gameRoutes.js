@@ -13,7 +13,7 @@ import {
   getGameStocks,
   getGameStockHistory
 } from '../controllers/gameControllers.js';
-import { askAI } from "../controllers/gameControllers.js";
+import { askAI, listModels } from "../controllers/gameControllers.js";
 const router = express.Router();
 
 // Room management routes
@@ -38,6 +38,7 @@ router.get('/:gameId/history', getGameStockHistory);
 
 router.get('/public', getPublicRooms); // NEW
 router.post('/learn', askAI); // NEW
+router.get('/list-models', listModels); // DEBUG
 
 
 export default router;
