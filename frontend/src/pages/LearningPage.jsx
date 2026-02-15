@@ -13,10 +13,11 @@ export default function LearningPage() {
         if (!query) return;
         setLoading(true);
         try {
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
             const res = await fetch("http://localhost:3000/api/game/learn", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ question: query })
+                body: JSON.stringify({ question: query, userId: user.user_id })
             });
             const data = await res.json();
             setResponse(data.answer);
@@ -33,10 +34,10 @@ export default function LearningPage() {
                 <h1 className="text-3xl font-bold text-sky-700 mb-6">AI Trading Mentor</h1>
                 <Card className="max-w-2xl mx-auto p-6">
                     <div className="space-y-4">
-                        <Input 
-                            placeholder="Ask about P/E ratio, Diversification, etc..." 
-                            value={query} 
-                            onChange={e => setQuery(e.target.value)} 
+                        <Input
+                            placeholder="Ask about P/E ratio, Diversification, etc..."
+                            value={query}
+                            onChange={e => setQuery(e.target.value)}
                         />
                         <Button onClick={handleAsk} disabled={loading} className="w-full">
                             {loading ? "Thinking..." : "Ask AI"}

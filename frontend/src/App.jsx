@@ -9,9 +9,9 @@ import GameLobby from './pages/GameLobby'; // Make sure this path is correct
 import LobbyPage from './pages/LobbyPage';
 import GameArena from './pages/GameArena';
 import ProfilePage from "./pages/ProfilePage";
-import  {HowToPlay}  from "./pages/Howtoplay";
-import  {ContactUs}  from "./pages/ContactUs";
-import  {AboutUs}  from "./pages/AboutUs";
+import { HowToPlay } from "./pages/Howtoplay";
+import ContactUs from "./pages/ContactUs";
+import AboutUs from "./pages/AboutUs";
 import LearningPage from "./pages/LearningPage";
 function App() {
   return (
@@ -22,18 +22,18 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/user-home" element={<UserHomePage />} />
         <Route path="/profile/" element={<ProfilePage />} />
-         <Route path="/about" element={<AboutUs />} />
-  <Route path="/contact" element={<ContactUs />} />
-  <Route path="/howto" element={<HowToPlay />} />
-  <Route path="/learning" element={<LearningPage />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactUs />} />
+        <Route path="/howto" element={<HowToPlay />} />
+        <Route path="/learning" element={<LearningPage />} />
         {/* New Route for creating/joining a game */}
-     {/*}   <Route path="/lobby" element={<GameLobby />} />*/}
+        {/*}   <Route path="/lobby" element={<GameLobby />} />*/}
 
 
- <Route path="/lobby/:roomId" element={<LobbyPage />} />
+        <Route path="/lobby/:roomId" element={<LobbyPage />} />
         <Route path="/game/:gameId" element={<GameArena />} />
         {/* This route remains the same, but it will now get its data from the lobby */}
-       {/* <Route path="/game/:gameId" element={<GameArena />} /> */}
+        {/* <Route path="/game/:gameId" element={<GameArena />} /> */}
       </Routes>
     </Router>
   );

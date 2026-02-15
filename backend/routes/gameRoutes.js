@@ -1,8 +1,8 @@
 import express from 'express';
 import {
-  createRoom, 
-  addChatMessage, 
-  getGameChats, 
+  createRoom,
+  addChatMessage,
+  getGameChats,
   joinGame,
   submitPlayerScore,
   getRoundLeaderboard,
@@ -10,7 +10,8 @@ import {
   getFinalLeaderboard,
   getGameLobby,
   getPublicRooms,
-  getGameStocks
+  getGameStocks,
+  kickPlayer
 } from '../controllers/gameControllers.js';
 import { askAI } from "../controllers/gameControllers.js";
 const router = express.Router();
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.post('/create', createRoom);
 router.post('/join', joinGame);
+router.post('/:gameId/kick', kickPlayer);
 
 // Chat routes
 router.post('/:gameId/chat', addChatMessage);

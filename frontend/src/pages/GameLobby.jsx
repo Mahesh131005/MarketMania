@@ -30,44 +30,88 @@ export default function GameLobby({ roomSettings, roomID, onStartGame, onNavigat
 
   useEffect(() => {
     const userString = localStorage.getItem("user");
+    let userId = null;
     if (userString) {
       const user = JSON.parse(userString);
+      userId = user.user_id;
       if (user.user_id === roomSettings.createdBy) setIsHost(true);
     }
 
     const newSocket = io('http://localhost:3000');
     setSocket(newSocket);
-    newSocket.emit('join-lobby', roomID);
+
+    // NEW: Send object with roomId AND userId
+    newSocket.emit('join-lobby', { roomId: roomID, userId });
 
     const fetchLobbyData = async () => {
-      const res = await fetch(`http://localhost:3000/api/game/${roomID}/lobby`);
-      const data = await res.json();
-      setPlayers(data.players.map(p => ({ id: p.user_id, name: p.full_name, isReady: true, isHost: p.user_id === roomSettings.createdBy })));
+      try {
+        const res = await fetch(`http://localhost:3000/api/game/${roomID}/lobby`);
+        if (res.ok) {
+          const data = await res.json();
+          setPlayers(data.players.map(p => ({ id: p.user_id, name: p.full_name, isReady: true, isHost: p.user_id === roomSettings.createdBy })));
+        }
+      } catch (err) {
+        console.error("Error fetching lobby:", err);
+      }
     };
     fetchLobbyData();
 
     newSocket.on('player-joined', fetchLobbyData);
+    newSocket.on('player-left', fetchLobbyData); // NEW
     newSocket.on('game-started', () => onStartGame(roomSettings, roomID));
+    newSocket.on('player-kicked', (kickedUserId) => {
+      // If WE are the one kicked
+      const userString = localStorage.getItem("user");
+      if (userString) {
+        const user = JSON.parse(userString);
+        if (String(user.user_id) === String(kickedUserId)) {
+          alert("You have been kicked from the room.");
+          window.location.href = '/user-home'; // Redirect using window location for safety or use navigate if available (prop is onNavigateToGame, not navigate)
+        }
+      }
+    });
 
     return () => {
       newSocket.off('player-joined', fetchLobbyData);
+      newSocket.off('player-left', fetchLobbyData);
       newSocket.off('game-started');
+      newSocket.off('player-kicked');
       newSocket.disconnect();
     };
   }, [roomID, onStartGame, roomSettings]);
 
-  <div className="mb-8 text-center">
-  <div className="inline-block bg-gradient-to-r from-sky-500 to-indigo-600 rounded-2xl p-8 shadow-xl">
-    <p className="text-white text-sm uppercase tracking-wider mb-2">Status</p>
-    <div className="text-4xl font-bold text-white bg-white/20 rounded-xl px-8 py-4 shadow-inner">
-       Waiting for Host
-    </div>
-    <p className="text-white text-xs mt-3 opacity-80">Game starts when host clicks start</p>
-  </div>
-</div>
+  // ... (keep Status UI)
 
   const handleStartGame = () => {
     if (socket && isHost) socket.emit('start-game', roomID);
+  };
+
+  const handleKick = async (playerId) => {
+    if (!window.confirm("Kick this player?")) return;
+    try {
+      // Need current user ID for requesterId
+      const userString = localStorage.getItem("user");
+      if (!userString) return;
+      const user = JSON.parse(userString);
+
+      const res = await fetch(`http://localhost:3000/api/game/${roomID}/kick`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: playerId, requesterId: user.user_id }),
+      });
+
+      if (res.ok) {
+        if (socket) {
+          socket.emit('kick-player', { roomId: roomID, userId: playerId });
+        }
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to kick player");
+      }
+    } catch (err) {
+      console.error("Error kicking player:", err);
+      alert("Error kicking player");
+    }
   };
 
   const formatTime = (seconds) => {
@@ -97,12 +141,14 @@ export default function GameLobby({ roomSettings, roomID, onStartGame, onNavigat
           </CardHeader>
 
           <CardContent>
-            {/* Timer Section */}
+            {/* Status Section */}
             <div className="mb-8 text-center">
               <div className="inline-block bg-gradient-to-r from-sky-500 to-indigo-600 rounded-2xl p-8 shadow-xl">
-                <p className="text-white text-sm uppercase tracking-wider mb-2">Game starts in</p>
-                <div className={`text-6xl font-bold ${getTimerColor()} bg-white rounded-xl px-8 py-4 shadow-inner`}>{formatTime(timeLeft)}</div>
-                <p className="text-white text-xs mt-3 opacity-80">or when host clicks start</p>
+                <p className="text-white text-sm uppercase tracking-wider mb-2">Status</p>
+                <div className="text-4xl font-bold text-white bg-white/20 rounded-xl px-8 py-4 shadow-inner">
+                  Waiting for Host
+                </div>
+                <p className="text-white text-xs mt-3 opacity-80">Game starts when host clicks start</p>
               </div>
             </div>
 
@@ -132,11 +178,24 @@ export default function GameLobby({ roomSettings, roomID, onStartGame, onNavigat
                         {player.isHost && <p className="text-xs text-sky-600">👑 Host</p>}
                       </div>
                     </div>
-                    <div>
+                    <div className="flex items-center gap-2">
+                      {/* Show status */}
                       {player.isReady ? (
                         <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">✓ Ready</span>
                       ) : (
                         <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold">⏳ Waiting</span>
+                      )}
+
+                      {/* Show Kick Button if User is Host and Target is NOT Host */}
+                      {isHost && !player.isHost && (
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="ml-2 px-3 py-1 text-xs"
+                          onClick={() => handleKick(player.id)}
+                        >
+                          Kick
+                        </Button>
                       )}
                     </div>
                   </div>

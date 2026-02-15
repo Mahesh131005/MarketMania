@@ -16,18 +16,10 @@ export const joinGameChat = (gameId) => {
   socket.emit('join-lobby', gameId); // Reusing 'join-lobby' room logic for chat
 };
 
-export const sendMessage = (gameId, userId, username, text, roundNumber) => {
+export const sendMessage = (gameId, userId, username, avatar, text, roundNumber) => {
   if (!socket) initializeSocket();
-  // We emit to socket AND call API to save to DB
-  socket.emit('send-message', { gameId, userId, username, text, roundNumber });
-
-  // Optimistic UI or let socket broadcast handle it. 
-  // Ideally call the API here:
-  fetch(`${backend_url}/api/game/${gameId}/chat`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, username, text, roundNumber })
-  }).catch(err => console.error(err));
+  // Emit to socket only. Server handles persistence and broadcast.
+  socket.emit('send-message', { gameId, userId, username, avatar, text, roundNumber });
 };
 
 export const subscribeToMessages = (callback) => {

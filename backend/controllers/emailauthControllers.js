@@ -79,12 +79,7 @@ export const registerUser = async (req, res) => {
     // Create user in DB
     const user = await createUser({ email, full_name, hashed_password, avatar });
     console.log("🆕 User created in DB:", user);
-    const inserted = await sql`
-      INSERT INTO users (email, full_name, hashed_password, avatar, last_login)
-      VALUES (${email}, ${full_name}, ${hashed_password}, ${avatar || '😎'}, NOW())
-      RETURNING user_id;
-    `;
-    const user_id = inserted[0].user_id;
+
     // Mark as active after successful registration
     await setUserActiveStatus(user.user_id, true);
     console.log("✅ User marked as active after registration:", user.user_id);
@@ -96,7 +91,8 @@ export const registerUser = async (req, res) => {
         email: user.email,
         full_name: user.full_name,
         google_id: null,
-        isactive: true
+        isactive: true,
+        avatar: user.avatar
       }
     });
   } catch (error) {
@@ -140,15 +136,15 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // 🟡 Debug the isActive check
+    // 🟡 Debug the isActive check - DISABLED for now to prevent lockout
     console.log("👀 Checking isActive status:", user.isactive, typeof user.isactive);
 
-    if (user.isactive === true) {
-      console.log("🚫 User already active, blocking login");
-      return res.status(401).json({
-        error: 'Already logged in on another device. Please log out from other devices first.'
-      });
-    }
+    // if (user.isactive === true) {
+    //   console.log("🚫 User already active, blocking login");
+    //   return res.status(401).json({
+    //     error: 'Already logged in on another device. Please log out from other devices first.'
+    //   });
+    // }
 
     // ✅ Mark user as active now
     console.log("🟢 Setting user active status to true...");

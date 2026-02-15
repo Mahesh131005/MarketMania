@@ -18,8 +18,11 @@ export const createRoom = async (req, res) => {
   // Ensure you include the existing createRoom code here
   try {
     const { roomID, name: room_name, numStocks, roundTime, maxPlayers, initialMoney, numRounds, createdBy } = req.body;
-    
+
     // ... validation ...
+    if (parseInt(roundTime) < 30) {
+      return res.status(400).json({ message: "Minimum round time is 30 seconds." });
+    }
     const userExists = await sql`SELECT * FROM users WHERE user_id = ${createdBy}`;
     if (userExists.length === 0) return res.status(400).json({ message: "Creator user does not exist" });
 
@@ -41,26 +44,47 @@ export const createRoom = async (req, res) => {
 export const joinGame = async (req, res) => {
   try {
     const { roomID, userId } = req.body;
+    console.log(`[joinGame] Request received: roomID=${roomID}, userId=${userId}`);
     if (!roomID || !userId) return res.status(400).json({ message: "Missing fields" });
 
     const rooms = await sql`SELECT * FROM game_rooms WHERE room_id = ${roomID}`;
+    console.log(`[joinGame] Rooms found: ${rooms.length}`);
     if (rooms.length === 0) return res.status(404).json({ exists: false, message: "Room not found" });
+
+    // NEW: Check for Ban
+    const kickCheck = await sql`SELECT kick_count FROM room_kicks WHERE game_id = ${roomID} AND user_id = ${userId}`;
+    if (kickCheck.length > 0 && kickCheck[0].kick_count > 2) {
+      return res.status(403).json({ exists: true, message: "You are banned from this room." });
+    }
 
     // 1. Check Max Players
     const participants = await sql`SELECT COUNT(*) FROM game_participants WHERE game_id = ${roomID}`;
     const currentCount = parseInt(participants[0].count);
     const maxPlayers = rooms[0].max_players;
+    console.log(`[joinGame] Current players: ${currentCount}, Max players: ${maxPlayers}`);
 
     const participantCheck = await sql`SELECT * FROM game_participants WHERE game_id = ${roomID} AND user_id = ${userId}`;
-    
+    console.log(`[joinGame] Participant check: ${participantCheck.length > 0 ? 'Found' : 'Not found'}`);
+
     if (participantCheck.length === 0) {
-        if (currentCount >= maxPlayers) {
-            return res.status(403).json({ exists: true, message: "Room is full!" });
-        }
+      if (currentCount >= maxPlayers) {
+        return res.status(403).json({ exists: true, message: "Room is full!" });
+      }
+      try {
         await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
+        console.log(`[joinGame] Added participant ${userId}`);
+      } catch (insertError) {
+        // Ignore duplicate key violation (race condition)
+        if (insertError.code === '23505') {
+          console.log(`[joinGame] Participant ${userId} already added (race condition handled)`);
+        } else {
+          throw insertError;
+        }
+      }
     }
 
     const room = rooms[0];
+    console.log(`[joinGame] Constructing roomData for room:`, room);
     const roomData = {
       createdBy: room.created_by,
       initialMoney: String(room.initial_money),
@@ -71,10 +95,11 @@ export const joinGame = async (req, res) => {
       roomID: room.room_id,
       roundTime: String(room.round_time)
     };
+    console.log(`[joinGame] Sending response`);
 
     res.status(200).json({ exists: true, roomData });
   } catch (err) {
-    console.error(err);
+    console.error("[joinGame] Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -103,7 +128,7 @@ export const getPublicRooms = async (req, res) => {
 export const askAI = async (req, res) => {
   try {
 
-    const { userId } = req.body;
+    const { userId, question } = req.body;
 
     if (!userId) {
       return res.status(400).json({
@@ -118,17 +143,13 @@ export const askAI = async (req, res) => {
     });
 
     const prompt = `
-You are a stock market coach.
+You are a stock market coach for the game "Market Mania".
 
-Analyze this Market Mania player with userId: ${userId}
+The user (Player ID: ${userId}) has asked: "${question}"
 
-Give:
-
-- strengths
-- weaknesses
-- mistakes
-- improvement suggestions
-- winning strategies
+Provide a helpful, educational answer about stock trading, game strategy, or market concepts. 
+Keep it concise (under 3 sentences if possible) and encouraging. 
+If the question is unrelated to finance/trading/game, politley steer them back.
 `;
 
     const result = await model.generateContent(prompt);
@@ -345,11 +366,12 @@ export const getGameLobby = async (req, res) => {
     }
 
     const players = await sql`
-      SELECT u.user_id, u.full_name
+      SELECT u.user_id, u.full_name, u.avatar
       FROM users u
       JOIN game_participants gp ON u.user_id = gp.user_id
       WHERE gp.game_id = ${gameId}
     `;
+    console.log(`[getGameLobby] Fetched players for ${gameId}:`, players);
 
     const room = await sql`
       SELECT * FROM game_rooms WHERE room_id = ${gameId}
@@ -382,3 +404,45 @@ export const getGameStocks = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error: Failed to fetch game stocks." });
   }
 }
+
+// ✅ Kick Player
+export const kickPlayer = async (req, res) => {
+  try {
+    const { gameId } = req.params;
+    const { userId, requesterId } = req.body;
+
+    if (!gameId || !userId || !requesterId) {
+      return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    // specific check: verify requester is the host
+    const room = await sql`SELECT created_by FROM game_rooms WHERE room_id = ${gameId}`;
+    if (room.length === 0) return res.status(404).json({ error: "Room not found." });
+
+    // Ensure both IDs are compared as the same type (likely integers from DB, but might be strings in JSON)
+    if (String(room[0].created_by) !== String(requesterId)) {
+      return res.status(403).json({ error: "Only the host can kick players." });
+    }
+
+    // Remove from participants
+    console.log(`[kickPlayer] Kick requested for user ${userId} in room ${gameId} by host ${requesterId}`);
+    await sql`DELETE FROM game_participants WHERE game_id = ${gameId} AND user_id = ${userId}`;
+
+    // NEW: Increment Kick Count
+    await sql`
+      INSERT INTO room_kicks (game_id, user_id, kick_count)
+      VALUES (${gameId}, ${userId}, 1)
+      ON CONFLICT (game_id, user_id)
+      DO UPDATE SET kick_count = room_kicks.kick_count + 1
+    `;
+
+    // Also remove their chats? Maybe keep them for history. 
+    // But definitely should trigger a socket event so the frontend knows (handled by client socket listening to 'player-kicked' or refreshing lobby)
+
+    res.status(200).json({ success: true, message: "Player kicked successfully." });
+
+  } catch (error) {
+    console.error("Error kicking player:", error);
+    res.status(500).json({ error: "Failed to kick player." });
+  }
+};

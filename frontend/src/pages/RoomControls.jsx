@@ -15,7 +15,7 @@ const RoomControls = () => {
     }
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
     const user_id = storedUser.user_id;
-    
+
     try {
       // Step 1: Check if the room exists and the user can join.
       const res = await fetch(`${backend_url}/api/game/join`, {
@@ -26,11 +26,11 @@ const RoomControls = () => {
 
       const data = await res.json();
       const roomId = roomCode.trim();
-      
+
       if (res.ok && data.exists) {
         // Step 2: Navigate to the lobby using hardcoded room settings for now.
         // As requested, this section uses temporary data instead of fetching it.
-     
+
         // Directly navigate with the hardcoded settings.
         navigate(`/lobby/${roomId}`, {
           state: {
@@ -40,7 +40,7 @@ const RoomControls = () => {
         });
 
       } else {
-        alert("❌ Invalid Room Code! Room does not exist or you cannot join.");
+        alert(data.message || "❌ Invalid Room Code! Room does not exist or you cannot join.");
       }
     } catch (error) {
       console.error("Error joining room:", error);

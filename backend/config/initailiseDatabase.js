@@ -55,6 +55,7 @@ export async function initialiseDatabase() {
         hashed_password TEXT,
         google_id VARCHAR(100),
         avatar TEXT DEFAULT '😎', -- Default avatar
+        details TEXT, -- User Bio/Details
         isactive BOOLEAN DEFAULT FALSE,
         last_login TIMESTAMP DEFAULT NOW(),
         created_at TIMESTAMP DEFAULT NOW()
@@ -151,6 +152,16 @@ export async function initialiseDatabase() {
     `;
 
     //sample end
+    await sql`
+      CREATE TABLE IF NOT EXISTS room_kicks (
+        game_id VARCHAR(50),
+        user_id SERIAL,
+        kick_count INT DEFAULT 1,
+        created_at TIMESTAMP DEFAULT NOW(),
+        PRIMARY KEY (game_id, user_id)
+      )
+    `;
+
     console.log("database intialised");
     console.log("Database initialised with Chat & Avatar support");
   } catch (error) {

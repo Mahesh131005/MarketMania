@@ -48,16 +48,16 @@ export const checkEmailExists = async (email) => {
 };
 
 // 🔹 Create a new user (email/password)
-export const createUser = async ({ email, full_name, hashed_password }) => {
+export const createUser = async ({ email, full_name, hashed_password, avatar }) => {
   try {
     const inserted = await sql`
-      INSERT INTO users (email, full_name, hashed_password, last_login)
-      VALUES (${email}, ${full_name}, ${hashed_password}, NOW())
+      INSERT INTO users (email, full_name, hashed_password, avatar, last_login)
+      VALUES (${email}, ${full_name}, ${hashed_password}, ${avatar || '😎'}, NOW())
       RETURNING user_id;
     `;
 
     const user_id = inserted[0].user_id;
-    return { user_id, email, full_name };
+    return { user_id, email, full_name, avatar };
   } catch (error) {
     console.error("Error while creating new user:", error.message);
     throw error;

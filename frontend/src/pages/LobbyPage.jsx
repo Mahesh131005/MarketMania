@@ -8,7 +8,7 @@ export default function LobbyPage() {
   const navigate = useNavigate();
   const [fetchedRoomSettings, setFetchedRoomSettings] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   // Use room settings from location state if available (from room creation)
   const roomSettingsFromState = location.state?.roomSettings;
 
@@ -17,30 +17,33 @@ export default function LobbyPage() {
     if (!roomSettingsFromState && roomId) {
       const fetchRoomSettings = async () => {
         try {
-          const user_id = localStorage.getItem('user_id');
-          if (!user_id) {
+          const userString = localStorage.getItem('user');
+          if (!userString) {
             console.error("User not logged in");
             return;
           }
+          const user = JSON.parse(userString);
+          const user_id = user.user_id;
 
-          const response = await fetch('/api/game/join', {
+          console.log(`[LobbyPage] Joining room: ${roomId} with user: ${user_id}`);
+          if (!roomId || !user_id) {
+            console.error("Missing roomId or user_id", { roomId, user_id });
+            alert("Invalid room or user information.");
+            navigate('/user-home');
+            return;
+          }
+
+          const response = await fetch('http://localhost:3000/api/game/join', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ roomID: roomId, userId: user_id }),
           });
 
           const data = await response.json();
-          
+
           if (data.exists) {
-            // Transform backend data to match the expected roomSettings format
-            setFetchedRoomSettings({
-              name: data.room.room_name,
-              numStocks: data.room.num_stocks,
-              roundTime: data.room.round_time,
-              maxPlayers: data.room.max_players,
-              initialMoney: data.room.initial_money,
-              numRounds: data.room.num_rounds
-            });
+            // Backend returns 'roomData' with camelCase keys
+            setFetchedRoomSettings(data.roomData);
           } else {
             alert("Room not found!");
             navigate('/user-home');
@@ -78,8 +81,8 @@ export default function LobbyPage() {
   }
 
   return (
-    <GameLobby 
-      roomSettings={roomSettings} 
+    <GameLobby
+      roomSettings={roomSettings}
       roomID={roomId}
       onStartGame={handleStartGame}
     />

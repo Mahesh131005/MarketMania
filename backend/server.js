@@ -47,8 +47,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
+  origin: 'http://localhost:5173',
+  credentials: true,
 }));
 app.use(helmet());
 app.use(morgan("dev"));
@@ -133,36 +133,85 @@ app.use("/api/game", gameRoutes);
 app.use("/api/user", userRoutes);
 app.post("/api/auth/logoutuser", logoutUser);
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
+const socketUsers = {}; // Map socket.id -> { userId, roomId }
 
-  socket.on('join-lobby', (roomId) => {
+io.on('connection', (socket) => {
+  console.log('a user connected:', socket.id);
+
+  socket.on('join-lobby', async (data) => {
+    // Support both old (roomId only) and new ({roomId, userId}) formats
+    const roomId = typeof data === 'object' ? data.roomId : data;
+    const userId = typeof data === 'object' ? data.userId : null;
+
     socket.join(roomId);
-    socket.to(roomId).emit('player-joined');
+
+    if (userId) {
+      socketUsers[socket.id] = { userId, roomId };
+    }
+
+    // Emit to everyone in room including sender (for real-time update)
+    io.to(roomId).emit('player-joined');
+
     // Sync state if game is running
     if (gameStates[roomId]) {
       socket.emit('sync-state', { round: gameStates[roomId].round });
     }
   });
 
-  socket.on('send-message', (data) => {
-    // Add timestamp for the frontend
-    const msgWithTime = { ...data, created_at: new Date().toISOString() };
-    io.to(data.gameId).emit('receive-message', msgWithTime);
+  socket.on('send-message', async (data) => {
+    // data = { gameId, userId, username, avatar, text, roundNumber } // roundNumber from client is a fallback/hint
+
+    const { gameId, userId, username, avatar, text } = data;
+
+    // 1. Determine Authoritative Round
+    let currentRound = data.roundNumber || 0;
+    if (gameStates[gameId]) {
+      currentRound = gameStates[gameId].round;
+    }
+
+    // 2. Construct Message Object
+    const msgWithTime = {
+      gameId,
+      userId,
+      username,
+      avatar,
+      text,
+      round_number: currentRound, // Use server-side round
+      created_at: new Date().toISOString()
+    };
+
+    // 3. Emit to Room (Immediate Display)
+    // Send 'round_number' property to match DB column name expected by frontend
+    io.to(gameId).emit('receive-message', msgWithTime);
+
+    // 4. Persist to Database (Async)
+    try {
+      await sql`
+        INSERT INTO game_chats (game_id, user_id, username, message, round_number) 
+        VALUES (${gameId}, ${userId}, ${username}, ${text}, ${currentRound})
+      `;
+    } catch (err) {
+      console.error("Error saving chat message to DB:", err);
+    }
+  });
+
+  socket.on('kick-player', ({ roomId, userId }) => {
+    io.to(roomId).emit('player-kicked', userId);
+    io.to(roomId).emit('player-left', userId);
   });
 
   socket.on('start-game', async (roomId) => {
     if (gameStates[roomId]) return;
 
     io.to(roomId).emit('game-started');
-    
+
     // Update DB status to 'in_progress'
     await sql`UPDATE games SET game_status = 'in_progress' WHERE game_id = ${roomId}`;
 
     try {
       const roomSettingsRes = await sql`SELECT round_time, num_rounds FROM game_rooms WHERE room_id = ${roomId}`;
       if (roomSettingsRes.length === 0) return;
-      
+
       const settings = roomSettingsRes[0];
       const roundTimeMs = settings.round_time * 1000; // e.g., 30000ms
       const numRounds = settings.num_rounds;
@@ -209,25 +258,59 @@ io.on('connection', (socket) => {
         gameState.timeout = setTimeout(() => {
           console.log(`Round ${gameState.round} ended. Showing leaderboard.`);
           io.to(roomId).emit('round-ended'); // Triggers leaderboard on frontend
-          
+
           // Schedule Next Round
           gameState.timeout = setTimeout(() => {
             runRound();
           }, breakTimeMs);
-          
+
         }, roundTimeMs);
       };
 
-      // Start the first round immediately
-      runRound();
+      // Start with Market Preview (Round 0 logic replacement)
+      console.log(`Starting Market Preview for ${roomId}`);
+      io.to(roomId).emit('market-preview', 10); // 10 seconds preview
+
+      setTimeout(() => {
+        // Start the first round after 10s preview
+        runRound();
+      }, 10000);
 
     } catch (error) {
       console.error(`Error starting game ${roomId}:`, error);
     }
   });
 
-  socket.on('disconnect', () => {
-   console.log('user disconnected');//just for now
+  socket.on('disconnect', async () => {
+    console.log('user disconnected:', socket.id);
+
+    // Handle Lobby Cleanup
+    const userInfo = socketUsers[socket.id];
+    if (userInfo) {
+      const { userId, roomId } = userInfo;
+      delete socketUsers[socket.id];
+
+      try {
+        // If game is still 'waiting', remove player from DB
+        const gameStatusRes = await sql`SELECT game_status FROM games WHERE game_id = ${roomId}`;
+        if (gameStatusRes.length > 0 && gameStatusRes[0].game_status === 'waiting') {
+          await sql`DELETE FROM game_participants WHERE game_id = ${roomId} AND user_id = ${userId}`;
+
+          // Notify others to refresh lobby
+          io.to(roomId).emit('player-left', userId); // OR just 'player-joined' to trigger refetch
+          io.to(roomId).emit('player-joined');
+
+          // Check if room is empty
+          const countRes = await sql`SELECT COUNT(*) FROM game_participants WHERE game_id = ${roomId}`;
+          if (parseInt(countRes[0].count) === 0) {
+            console.log(`Room ${roomId} is empty. Marking as inactive.`);
+            await sql`UPDATE games SET game_status = 'inactive' WHERE game_id = ${roomId}`;
+          }
+        }
+      } catch (err) {
+        console.error("Error handling disconnect cleanup:", err);
+      }
+    }
   });
 });
 

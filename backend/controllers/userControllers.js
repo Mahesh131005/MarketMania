@@ -24,20 +24,20 @@ export const logoutUser = async (req, res) => {
 };
 
 export const getUserProfile = async (req, res) => {
-    try {
-        const { userId } = req.params;
+  try {
+    const { userId } = req.params;
 
-        const gamesPlayedResult = await sql`
+    const gamesPlayedResult = await sql`
             SELECT COUNT(*) FROM final_scores WHERE user_id = ${userId};
         `;
-        const gamesPlayed = parseInt(gamesPlayedResult[0].count, 10);
+    const gamesPlayed = parseInt(gamesPlayedResult[0].count, 10);
 
-        const winsResult = await sql`
+    const winsResult = await sql`
             SELECT COUNT(*) FROM final_scores WHERE user_id = ${userId} AND final_rank = 1;
         `;
-        const wins = parseInt(winsResult[0].count, 10);
+    const wins = parseInt(winsResult[0].count, 10);
 
-        const history = await sql`
+    const history = await sql`
             SELECT game_id, final_rank, game_completed_at
             FROM final_scores
             WHERE user_id = ${userId}
@@ -45,29 +45,38 @@ export const getUserProfile = async (req, res) => {
             LIMIT 5;
         `;
 
-        res.status(200).json({
-            gamesPlayed,
-            wins,
-            history
-        });
-    } catch (error) {
-        console.error("Error fetching user profile:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+    const userDetailsResult = await sql`
+            SELECT full_name, email, details, last_login FROM users WHERE user_id = ${userId};
+        `;
+    const userInfo = userDetailsResult[0];
+
+    res.status(200).json({
+      gamesPlayed,
+      wins,
+      history,
+      details: userInfo?.details || "",
+      full_name: userInfo?.full_name,
+      email: userInfo?.email,
+      last_login: userInfo?.last_login
+    });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 ///
 export const updateUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { fullName, avatar } = req.body; // Expecting avatar as emoji or string
+    const { fullName, avatar, details } = req.body; // Expecting avatar as emoji or string
 
     await sql`
       UPDATE users 
-      SET full_name = ${fullName}, avatar = ${avatar}
+      SET full_name = ${fullName}, avatar = ${avatar}, details = ${details}
       WHERE user_id = ${userId}
     `;
 
-    res.status(200).json({ success: true, message: "Profile updated" });
+    res.status(200).json({ success: true, message: "Profile updated", user: { fullName, avatar, details } });
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ error: "Failed to update profile" });

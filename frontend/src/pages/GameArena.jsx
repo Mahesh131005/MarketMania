@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useLocation, useParams, Navigate } from 'react-router-dom';
+import { useLocation, useParams, Navigate, useNavigate } from 'react-router-dom';
+import { X } from "lucide-react";
 import ChatPage from './ChatPage';
 import RoundLeaderboard from '../components/RoundLeaderboard';
 import FinalLeaderboard from '../components/FinalLeaderboard';
@@ -11,7 +12,7 @@ const Button = ({ children, onClick, variant, className = "", disabled }) => {
   const styles = variant === "destructive" ? "bg-red-600 hover:bg-red-700 focus:ring-red-500" : variant === "secondary" ? "bg-gray-600 hover:bg-gray-700 focus:ring-gray-500" : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500";
   return (<button onClick={onClick} className={`${base} ${styles} ${className}`} disabled={disabled}>{children}</button>);
 };
-const Input = (props) => (<input {...props} className={`p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props.className}`}/>);
+const Input = (props) => (<input {...props} className={`p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props.className}`} />);
 const Card = ({ children, className = "" }) => (<div className={`bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow ${className}`}>{children}</div>);
 const CardHeader = ({ children }) => <div className="p-3 border-b border-gray-200">{children}</div>;
 const CardTitle = ({ children }) => <h3 className="text-base font-bold text-gray-900">{children}</h3>;
@@ -31,12 +32,16 @@ export default function GameArena() {
   if (!roomSettings) {
     return <Navigate to="/user-home" replace />;
   }
-  
+
   const [quantity, setQuantity] = useState({});
+  const [stockSearch, setStockSearch] = useState("");
   const [feedback, setFeedback] = useState({ message: "", type: "" });
+  const navigate = useNavigate();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isRoundLeaderboardOpen, setIsRoundLeaderboardOpen] = useState(false);
   const [isFinalLeaderboardOpen, setIsFinalLeaderboardOpen] = useState(false);
+  const [isPlayerListOpen, setIsPlayerListOpen] = useState(false); // NEW
+  const [players, setPlayers] = useState([]); // NEW
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [gameCompleted, setGameCompleted] = useState(false);
@@ -76,13 +81,43 @@ export default function GameArena() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(scoreData),
       });
-       if (!response.ok) throw new Error('Failed to submit score to server');
+      if (!response.ok) throw new Error('Failed to submit score to server');
     } catch (error) {
       console.error('Error submitting score:', error);
     } finally {
       setIsSubmittingScore(false);
     }
   }, [currentUserId, gameId]);
+
+  /* MOVED fetchPlayers UP & Wrapped in useCallback */
+  const fetchPlayers = useCallback(async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/game/${gameId}/lobby`);
+      if (res.ok) {
+        const data = await res.json();
+        setPlayers(data.players || []);
+      }
+    } catch (error) {
+      console.error("Error fetching players:", error);
+    }
+  }, [gameId]);
+
+  useEffect(() => {
+    // Initial fetch
+    fetchPlayers();
+  }, [fetchPlayers]);
+
+  const [isPreviewPhase, setIsPreviewPhase] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  // Timer Logic
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   useEffect(() => {
     const newSocket = io('http://localhost:3000');
@@ -112,32 +147,66 @@ export default function GameArena() {
     }
     fetchInitialStocks();
 
+    newSocket.on('market-preview', (duration) => {
+      setIsPreviewPhase(true);
+      setTimeLeft(duration);
+      setNotices(["Market Preview: Analyze the stock trends (10s)!"]);
+    });
+
     newSocket.on('new-round', (newRound) => {
+      setIsPreviewPhase(false);
       if (newRound > 1) submitScore(newRound - 1);
       setRound(newRound);
+      // Reset timer for the new round
+      setTimeLeft(parseInt(roomSettings.roundTime, 10));
     });
+
     newSocket.on('news-update', (newNotices) => setNotices(newNotices));
     newSocket.on('price-update', (updatedStocks) => {
       setStocks(updatedStocks);
       setShowRoundEndModal(true);
+      // Wait for 6s break (matching backend) then verify if next round starts
       setTimeout(() => {
         setShowRoundEndModal(false);
         if (round >= 1) setIsRoundLeaderboardOpen(true);
-      }, 3000);
+      }, 6000);
     });
     newSocket.on('game-over', () => {
       setGameCompleted(true);
       submitFinalScore();
     });
 
+    // Handle being kicked
+    newSocket.on('player-kicked', (kickedUserId) => {
+      if (String(kickedUserId) === String(currentUserId)) {
+        alert("You have been kicked from the room.");
+        navigate("/user-home");
+      }
+      fetchPlayers(); // Update list if someone is kicked
+    });
+
+    // Real-time Player Updates
+    newSocket.on('player-joined', () => {
+      console.log("Player joined event received");
+      fetchPlayers();
+    });
+    newSocket.on('player-left', () => {
+      console.log("Player left event received");
+      fetchPlayers();
+    });
+
     return () => {
+      newSocket.off('market-preview');
       newSocket.off('new-round');
       newSocket.off('news-update');
       newSocket.off('price-update');
       newSocket.off('game-over');
+      newSocket.off('player-kicked');
+      newSocket.off('player-joined');
+      newSocket.off('player-left');
       newSocket.disconnect();
     }
-  }, [gameId, submitScore]);
+  }, [gameId, submitScore, currentUserId, navigate, roomSettings.roundTime, fetchPlayers]);
 
   // --- SHORT/LONG ---: Updated portfolio and net worth calculation
   useEffect(() => {
@@ -147,12 +216,12 @@ export default function GameArena() {
     let shortLiability = 0;
 
     stocks.forEach(stock => {
-        const quantity = holdings[stock.name] || 0;
-        if (quantity > 0) {
-            longValue += quantity * stock.price;
-        } else if (quantity < 0) {
-            shortLiability += Math.abs(quantity) * stock.price;
-        }
+      const quantity = holdings[stock.name] || 0;
+      if (quantity > 0) {
+        longValue += quantity * stock.price;
+      } else if (quantity < 0) {
+        shortLiability += Math.abs(quantity) * stock.price;
+      }
     });
 
     const netPortfolioValue = longValue - shortLiability;
@@ -195,6 +264,34 @@ export default function GameArena() {
     setTimeout(() => setFeedback({ message: "", type: "" }), 3000);
   };
 
+  const handleQuit = () => {
+    if (window.confirm("Are you sure you want to quit the game? Progress may be lost.")) {
+      navigate("/user-home");
+    }
+  };
+
+
+
+  const handleKick = async (targetUserId) => {
+    if (!window.confirm("Kick this player?")) return;
+    try {
+      const res = await fetch(`http://localhost:3000/api/game/${gameId}/kick`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: targetUserId, requesterId: currentUserId }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showFeedback("Player kicked", "success");
+        setPlayers(players.filter(p => p.user_id !== targetUserId));
+      } else {
+        showFeedback(data.error || "Failed to kick", "error");
+      }
+    } catch (error) {
+      showFeedback("Error kicking player", "error");
+    }
+  };
+
   // --- SHORT/LONG ---: Updated trading logic to handle long and short positions
   const buyStock = useCallback((stockName, quantity) => {
     const numQuantity = parseInt(quantity, 10);
@@ -202,7 +299,7 @@ export default function GameArena() {
 
     const stockToTrade = stocks.find((s) => s.name === stockName);
     if (!stockToTrade) return { success: false, message: "Stock not found." };
-    
+
     const cost = stockToTrade.price * numQuantity;
     const currentHolding = holdings[stockName] || 0;
 
@@ -217,7 +314,7 @@ export default function GameArena() {
       ...h,
       [stockName]: (h[stockName] || 0) + numQuantity,
     }));
-    
+
     const action = currentHolding < 0 ? "Covered" : "Bought";
     return { success: true, message: `${action} ${numQuantity} of ${stockName}.` };
   }, [money, stocks, holdings]);
@@ -225,7 +322,7 @@ export default function GameArena() {
   const sellStock = useCallback((stockName, quantity) => {
     const numQuantity = parseInt(quantity, 10);
     if (isNaN(numQuantity) || numQuantity <= 0) return { success: false, message: "Invalid quantity." };
-    
+
     const stockToTrade = stocks.find((s) => s.name === stockName);
     if (!stockToTrade) return { success: false, message: "Stock not found." };
 
@@ -275,11 +372,11 @@ export default function GameArena() {
   const holdingsList = Object.entries(holdings)
     .filter(([_, qty]) => qty !== 0)
     .map(([name, qty]) => {
-        const stock = stocks.find((s) => s.name === name);
-        const currentPrice = stock?.price || 0;
-        const value = currentPrice * qty; // This will be negative for short positions
-        const positionType = qty > 0 ? "Long" : "Short";
-        return { name, qty, value, positionType, currentPrice };
+      const stock = stocks.find((s) => s.name === name);
+      const currentPrice = stock?.price || 0;
+      const value = currentPrice * qty; // This will be negative for short positions
+      const positionType = qty > 0 ? "Long" : "Short";
+      return { name, qty, value, positionType, currentPrice };
     });
 
   if (!initialStocks) return <div className="flex items-center justify-center h-screen">Loading game data...</div>
@@ -289,14 +386,27 @@ export default function GameArena() {
       <aside className="w-full md:w-1/3 lg:w-1/4 p-4 bg-white border-r border-gray-200 flex flex-col gap-4">
         <h2 className="text-2xl font-bold text-indigo-700">Dalal Street Simulator</h2>
         <div className="text-base p-3 bg-gray-100 rounded-lg shadow-inner">
-          <p>Round: <span className="font-semibold">{round}</span> of <span className="font-semibold">{roomSettings.numRounds}</span></p>
+          <div className="flex justify-between items-center mb-2">
+            <p>Round: <span className="font-semibold">{isPreviewPhase ? "Preview" : round}</span> / <span className="font-semibold">{roomSettings.numRounds}</span></p>
+            <div className={`px-3 py-1 rounded-md font-bold text-white ${timeLeft <= 10 ? 'bg-red-500 animate-pulse' : 'bg-indigo-600'}`}>
+              Time: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+            </div>
+          </div>
           <p>Cash: <span className="font-semibold text-green-600">₹{money.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span></p>
-          {/* --- SHORT/LONG ---: Changed "Holdings" to "Portfolio Value" for clarity */}
           <p>Portfolio Value: <span className="font-semibold">₹{portfolioValue.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span></p>
           <p className="text-lg font-bold">Net Worth: <span className="text-indigo-800">₹{netWorth.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span></p>
         </div>
+
+        {/* Search Input */}
+        <Input
+          type="text"
+          placeholder="Search stocks..."
+          className="w-full mb-2"
+          onChange={(e) => setStockSearch(e.target.value)}
+        />
+
         <ScrollArea className="flex-1 -mx-4 px-4">
-          {stocks.map((stock) => (
+          {stocks.filter(stock => stock.name.toLowerCase().includes(stockSearch.toLowerCase())).map((stock) => (
             <Card key={stock.name} className="mb-3">
               <CardHeader>
                 <div className="flex justify-between items-center">
@@ -307,16 +417,14 @@ export default function GameArena() {
               <CardContent className="flex flex-col gap-2">
                 <div className="text-xs text-gray-500 flex justify-between">
                   <span>PE: {stock.pe}</span>
-                  {/* --- SHORT/LONG ---: Show position type in owned display */}
                   <span className="font-semibold">
-                    Position: {holdings[stock.name] > 0 ? `Long ${holdings[stock.name]}` : holdings[stock.name] < 0 ? `Short ${Math.abs(holdings[stock.name])}`: 'None'}
+                    Position: {holdings[stock.name] > 0 ? `Long ${holdings[stock.name]}` : holdings[stock.name] < 0 ? `Short ${Math.abs(holdings[stock.name])}` : 'None'}
                   </span>
                 </div>
                 <div className="flex gap-2 items-center">
                   <Input type="text" placeholder="Qty" className="w-16 text-center" value={quantity[stock.name] || ""} onChange={(e) => handleQuantityChange(stock.name, e.target.value)} />
                   <Button onClick={() => handleAction(buyStock, stock.name)}>Buy</Button>
                   <Button variant="destructive" onClick={() => handleAction(sellStock, stock.name)}>Sell</Button>
-                  {/* --- SHORT/LONG ---: Added a Short button */}
                   <Button variant="secondary" onClick={() => handleAction(shortStock, stock.name)}>Short</Button>
                 </div>
               </CardContent>
@@ -327,14 +435,16 @@ export default function GameArena() {
 
       <main className="flex-1 p-6 flex flex-col gap-6">
         <div className="flex items-center justify-end gap-4">
-            <Button 
-              variant="secondary" 
-              onClick={() => setIsRoundLeaderboardOpen(true)}
-              disabled={isSubmittingScore || round < 1}
-            >
-              📊 Round Leaderboard
-            </Button>
-           <Button variant="secondary" onClick={() => setIsChatOpen(true)}>💬 Chat</Button>
+          <Button variant="destructive" onClick={handleQuit}>Exit Game</Button>
+          <Button variant="secondary" onClick={() => setIsPlayerListOpen(true)}>👥 Players</Button>
+          <Button
+            variant="secondary"
+            onClick={() => setIsRoundLeaderboardOpen(true)}
+            disabled={isSubmittingScore || round < 1}
+          >
+            📊 Round Leaderboard
+          </Button>
+          <Button variant="secondary" onClick={() => setIsChatOpen(true)}>💬 Chat</Button>
         </div>
 
         <div>
@@ -382,13 +492,35 @@ export default function GameArena() {
           {feedback.message}
         </div>
       )}
-      
+
       {showRoundEndModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-fade-in">
-            <div className="bg-white p-10 rounded-xl shadow-2xl text-center transform animate-scale-in">
-                <h2 className="text-4xl font-bold text-indigo-700">Round {round - 1} Completed!</h2>
-                <p className="mt-2 text-gray-600">Updating prices and preparing next round...</p>
+          <div className="bg-white p-10 rounded-xl shadow-2xl text-center transform animate-scale-in">
+            <h2 className="text-4xl font-bold text-indigo-700">Round {round - 1} Completed!</h2>
+            <p className="mt-2 text-gray-600">Updating prices and preparing next round...</p>
+          </div>
+        </div>
+      )}
+
+      {isPlayerListOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
+            <div className="p-4 border-b flex justify-between items-center bg-gray-50">
+              <h3 className="font-bold text-lg">Active Players</h3>
+              <button onClick={() => setIsPlayerListOpen(false)} className="text-gray-500 hover:text-gray-700"><X size={20} /></button>
             </div>
+            <div className="p-4 max-h-[60vh] overflow-y-auto">
+              {players.map(p => (
+                <div key={p.user_id} className="flex justify-between items-center p-2 hover:bg-gray-50 border-b last:border-0">
+                  <span className="font-medium">{p.full_name} {String(p.user_id) === String(currentUserId) && "(You)"}</span>
+                  {String(roomSettings.created_by) === String(currentUserId) && String(p.user_id) !== String(currentUserId) && (
+                    <Button variant="destructive" className="px-2 py-1 text-xs" onClick={() => handleKick(p.user_id)}>Kick</Button>
+                  )}
+                </div>
+              ))}
+              {players.length === 0 && <p className="text-center text-gray-500">No players found.</p>}
+            </div>
+          </div>
         </div>
       )}
 
@@ -410,6 +542,7 @@ export default function GameArena() {
         gameId={gameId}
         chatOpen={isChatOpen}
         setChatOpen={setIsChatOpen}
+        currentRound={round}
       />
     </div>
   );

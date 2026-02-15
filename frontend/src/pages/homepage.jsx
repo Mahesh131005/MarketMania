@@ -81,8 +81,8 @@ function Header() {
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-3">
-           <Link to="/login"><Button className="hidden md:inline-flex" variant="ghost">Login</Button></Link>
-           <Link to="/register"><Button className="hidden md:inline-flex" variant="default">Register</Button></Link>
+          <Link to="/login"><Button className="hidden md:inline-flex" variant="ghost">Login</Button></Link>
+          <Link to="/register"><Button className="hidden md:inline-flex" variant="default">Register</Button></Link>
         </div>
       </div>
     </header>
@@ -111,8 +111,8 @@ function Hero() {
         </p>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button size="lg">Start Playing</Button>
-          <Button variant="outline" size="lg">How it Works</Button>
+          <Link to="/register"><Button size="lg">Start Playing</Button></Link>
+          <Link to="/howto"><Button variant="outline" size="lg">How it Works</Button></Link>
         </div>
 
         <div className="mt-6 flex gap-4 items-center">
@@ -142,7 +142,7 @@ function Hero() {
               <CardContent>
                 <div className="flex gap-2">
                   <Input placeholder="Room code or name" />
-                  <Button>Join</Button>
+                  <Link to="/user-home"><Button>Join</Button></Link>
                 </div>
               </CardContent>
             </Card>

@@ -5,17 +5,18 @@ import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Sidebar } from '../components/ui/sidebar';
 import { motion } from 'framer-motion';
 // Imports for Edit Profile Modal
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
 
 const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [stats, setStats] = useState({ gamesPlayed: 0, wins: 0, history: [] });
-    
+
     // State for Edit Profile
     const [isEditing, setIsEditing] = useState(false);
     const [editName, setEditName] = useState("");
     const [editAvatar, setEditAvatar] = useState("");
+    const [editDetails, setEditDetails] = useState("");
 
     const navigate = useNavigate();
 
@@ -26,7 +27,8 @@ const ProfilePage = () => {
             // Initialize edit state fields
             setEditName(storedUser.full_name || "");
             setEditAvatar(storedUser.avatar || "😎");
-            
+            setEditDetails(storedUser.details || "");
+
             fetchProfileData(storedUser.user_id);
         } else {
             navigate('/login');
@@ -39,6 +41,28 @@ const ProfilePage = () => {
             if (response.ok) {
                 const data = await response.json();
                 setStats(data);
+                // Update user state with details from backend if available
+                if (data.details) {
+                    const updatedUser = { ...user, details: data.details };
+                    setUser(updatedUser);
+                    localStorage.setItem("user", JSON.stringify(updatedUser)); // Persist to local storage
+                    if (isEditing) setEditDetails(data.details); // Update edit field if open (edge case)
+                }
+
+                // Ensure name, email, and last_login are synced
+                if (data.full_name || data.email || data.last_login) {
+                    setUser(prev => {
+                        const updated = {
+                            ...prev,
+                            ...(data.full_name && { full_name: data.full_name }),
+                            ...(data.email && { email: data.email }),
+                            ...(data.last_login && { last_login: data.last_login })
+                        };
+                        localStorage.setItem("user", JSON.stringify(updated));
+                        return updated;
+                    });
+                    if (isEditing) setEditName(data.full_name);
+                }
             } else {
                 console.error("Failed to fetch profile data");
             }
@@ -59,13 +83,13 @@ const ProfilePage = () => {
         try {
             const response = await fetch(`http://localhost:3000/api/user/profile/${storedUser.user_id}`, {
                 method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ fullName: editName, avatar: editAvatar })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName: editName, avatar: editAvatar, details: editDetails })
             });
-            
+
             if (response.ok) {
                 // Update local storage and UI
-                const updated = { ...storedUser, full_name: editName, avatar: editAvatar };
+                const updated = { ...storedUser, full_name: editName, avatar: editAvatar, details: editDetails };
                 localStorage.setItem("user", JSON.stringify(updated));
                 setUser(updated);
                 setIsEditing(false);
@@ -88,47 +112,61 @@ const ProfilePage = () => {
                 <div className="max-w-5xl mx-auto">
                     {/* Header Section with Edit & Logout */}
                     <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-                        <motion.h1 
+                        <motion.h1
                             className="text-4xl md:text-5xl font-extrabold text-sky-700"
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                         >My Profile</motion.h1>
-                        
+
                         <div className="flex gap-2">
-                             {/* Edit Profile Modal */}
-                             <Dialog open={isEditing} onOpenChange={setIsEditing}>
-                                  <DialogTrigger asChild>
-                                      <Button variant="outline" onClick={() => { 
-                                          setEditName(user.full_name); 
-                                          setEditAvatar(user.avatar || '😎'); 
-                                      }}>Edit Profile</Button>
-                                  </DialogTrigger>
-                                  <DialogContent>
-                                      <DialogHeader><DialogTitle>Edit Profile</DialogTitle></DialogHeader>
-                                      <div className="space-y-4 py-4">
-                                          <div>
-                                             <label className="text-sm font-medium mb-1 block">Full Name</label>
-                                             <Input value={editName} onChange={e => setEditName(e.target.value)} />
-                                          </div>
-                                          <div>
-                                             <label className="text-sm font-medium mb-1 block">Avatar (Emoji)</label>
-                                             <div className="flex gap-2 mt-2">
-                                                {['😎','🚀','🦁','💎','🤖'].map(emoji => (
-                                                    <button 
-                                                        key={emoji} 
-                                                        onClick={() => setEditAvatar(emoji)} 
+                            {/* Edit Profile Modal */}
+                            <Dialog open={isEditing} onOpenChange={setIsEditing}>
+                                <DialogTrigger asChild>
+                                    <Button variant="outline" onClick={() => {
+                                        setEditName(user.full_name);
+                                        setEditAvatar(user.avatar || '😎');
+                                        setEditDetails(user.details || "");
+                                    }}>Edit Profile</Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Edit Profile</DialogTitle>
+                                        <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
+                                    </DialogHeader>
+                                    <div className="space-y-4 py-4">
+                                        <div>
+                                            <label className="text-sm font-medium mb-1 block">Full Name</label>
+                                            <Input value={editName} onChange={e => setEditName(e.target.value)} />
+                                        </div>
+                                        <div>
+                                            <label className="text-sm font-medium mb-1 block">Avatar (Emoji)</label>
+                                            <div className="flex gap-2 mt-2">
+                                                {['😎', '🚀', '🦁', '💎', '🤖'].map(emoji => (
+                                                    <button
+                                                        key={emoji}
+                                                        onClick={() => setEditAvatar(emoji)}
                                                         className={`text-2xl p-2 rounded transition-colors ${editAvatar === emoji ? 'bg-sky-100 ring-2 ring-sky-300' : 'hover:bg-gray-100'}`}
                                                     >
                                                         {emoji}
                                                     </button>
                                                 ))}
-                                             </div>
-                                          </div>
-                                          <Button onClick={handleUpdateProfile} className="w-full mt-2">Save Changes</Button>
-                                      </div>
-                                  </DialogContent>
-                               </Dialog>
+                                            </div>
+                                        </div>
+                                        <div className="mb-4">
+                                            <label className="text-sm font-medium mb-1 block">Bio / Details</label>
+                                            <textarea
+                                                className="w-full border border-sky-200 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                                rows="3"
+                                                value={editDetails}
+                                                onChange={e => setEditDetails(e.target.value)}
+                                                placeholder="Tell us about yourself..."
+                                            />
+                                        </div>
+                                        <Button onClick={handleUpdateProfile} className="w-full mt-2">Save Changes</Button>
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
 
                             <Button variant="destructive" onClick={handleLogout}>Logout</Button>
                         </div>
@@ -157,7 +195,11 @@ const ProfilePage = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500">Last Login</p>
-                                    <p className="text-lg font-semibold text-gray-800">{new Date(user.last_login).toLocaleString()}</p>
+                                    <p className="text-lg font-semibold text-gray-800">{user.last_login ? new Date(user.last_login).toLocaleString() : "N/A"}</p>
+                                </div>
+                                <div className="md:col-span-2">
+                                    <p className="text-sm text-gray-500">Bio</p>
+                                    <p className="text-gray-700 italic">{user.details || "No details provided."}</p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -186,7 +228,7 @@ const ProfilePage = () => {
                                 <CardTitle>Learning</CardTitle>
                             </CardHeader>
                             <CardContent>
-                               <Button className="bg-sky-600 hover:bg-sky-700 text-white">Start Learning</Button>
+                                <Button className="bg-sky-600 hover:bg-sky-700 text-white">Start Learning</Button>
                             </CardContent>
                         </Card>
                     </motion.div>
