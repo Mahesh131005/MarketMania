@@ -47,7 +47,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (storedUser) {
+        if (storedUser && storedUser.user_id) {
             setUser(storedUser);
             // Initialize edit state fields
             setEditName(storedUser.full_name || "");
@@ -56,6 +56,8 @@ const ProfilePage = () => {
 
             fetchProfileData(storedUser.user_id);
         } else {
+            console.warn("User data invalid or missing user_id. Redirecting to login.");
+            localStorage.removeItem("user"); // Clear invalid data
             navigate('/login');
         }
     }, [navigate]);
@@ -66,28 +68,30 @@ const ProfilePage = () => {
             if (response.ok) {
                 const data = await response.json();
                 setStats(data);
-                // Update user state with details from backend if available
-                if (data.details) {
-                    const updatedUser = { ...user, details: data.details };
-                    setUser(updatedUser);
-                    localStorage.setItem("user", JSON.stringify(updatedUser)); // Persist to local storage
-                    if (isEditing) setEditDetails(data.details); // Update edit field if open (edge case)
-                }
 
-                // Ensure name, email, and last_login are synced
-                if (data.full_name || data.email || data.last_login) {
-                    setUser(prev => {
-                        const updated = {
-                            ...prev,
-                            ...(data.full_name && { full_name: data.full_name }),
-                            ...(data.email && { email: data.email }),
-                            ...(data.last_login && { last_login: data.last_login })
-                        };
-                        localStorage.setItem("user", JSON.stringify(updated));
-                        return updated;
-                    });
-                    if (isEditing) setEditName(data.full_name);
-                }
+                // Update user state and localStorage safely using functional update
+                setUser(prevUser => {
+                    if (!prevUser) return prevUser; // Should not happen if logic is correct
+
+                    const updatedUser = {
+                        ...prevUser,
+                        ...(data.details && { details: data.details }),
+                        ...(data.full_name && { full_name: data.full_name }),
+                        ...(data.email && { email: data.email }),
+                        ...(data.last_login && { last_login: data.last_login })
+                    };
+
+                    localStorage.setItem("user", JSON.stringify(updatedUser)); // Persist to local storage
+
+                    // Update edit state if needed
+                    if (isEditing) {
+                        if (data.details) setEditDetails(data.details);
+                        if (data.full_name) setEditName(data.full_name);
+                    }
+
+                    return updatedUser;
+                });
+
             } else {
                 console.error("Failed to fetch profile data");
             }
@@ -103,7 +107,10 @@ const ProfilePage = () => {
 
     const handleUpdateProfile = async () => {
         const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (!storedUser) return;
+        if (!storedUser || !storedUser.user_id) {
+            console.error("User ID missing for update");
+            return;
+        }
 
         try {
             const response = await fetch(`http://localhost:3000/api/user/profile/${storedUser.user_id}`, {

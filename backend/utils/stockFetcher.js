@@ -141,3 +141,32 @@ export async function updateGlobalStockPrices() {
 
     console.log("Global stock prices updated successfully in DB.");
 }
+
+/**
+ * Seeds the global_stocks table if it is empty.
+ */
+export async function seedGlobalStocks() {
+    try {
+        const countResult = await sql`SELECT COUNT(*) FROM global_stocks`;
+        const count = parseInt(countResult[0].count);
+
+        if (count > 0) {
+            console.log("Global stocks already seeded.");
+            return;
+        }
+
+        console.log("Seeding global_stocks...");
+        const stocks = Object.keys(TICKER_MAPPING);
+
+        for (const stockName of stocks) {
+            // Default values, will be updated by updateGlobalStockPrices
+            await sql`
+                INSERT INTO global_stocks (stock_name, price, pe_ratio, sectors, total_volume, volatility)
+                VALUES (${stockName}, 0, 0, ${['General']}, 0, 0.02)
+            `;
+        }
+        console.log(`Seeded ${stocks.length} stocks into global_stocks.`);
+    } catch (error) {
+        console.error("Error seeding global stocks:", error);
+    }
+}

@@ -67,12 +67,14 @@ export default function GameArena() {
   const moneyRef = useRef(money);
   const portfolioValueRef = useRef(portfolioValue);
   const netWorthRef = useRef(netWorth);
+  const roundRef = useRef(round); // NEW: Track round
 
   useEffect(() => {
     moneyRef.current = money;
     portfolioValueRef.current = portfolioValue;
     netWorthRef.current = netWorth;
-  });
+    roundRef.current = round; // Update ref
+  }, [money, portfolioValue, netWorth, round]);
 
   const submitScore = useCallback(async (roundNumber) => {
     if (!currentUserId || !gameId) return;
@@ -164,22 +166,35 @@ export default function GameArena() {
 
     newSocket.on('new-round', (newRound) => {
       setIsPreviewPhase(false);
-      if (newRound > 1) submitScore(newRound - 1);
+      // submitScore is now handled in round-ended
       setRound(newRound);
       // Reset timer for the new round
       setTimeLeft(parseInt(roomSettings.roundTime, 10));
+      // Close leaderboard in case it's still open when new round starts
+      setIsRoundLeaderboardOpen(false);
     });
 
     newSocket.on('news-update', (newNotices) => setNotices(newNotices));
+
     newSocket.on('price-update', (updatedStocks) => {
       setStocks(updatedStocks);
+      // Removed the modal/leaderboard trigger from here as it was premature
+    });
+
+    newSocket.on('round-ended', () => {
+      console.log("Round ended event received. Current Round:", roundRef.current);
+      // Submit score for the CURRENT round that just finished
+      submitScore(roundRef.current);
+
       setShowRoundEndModal(true);
-      // Wait for 6s break (matching backend) then verify if next round starts
+
+      // Show modal for 3 seconds, then show leaderboard
       setTimeout(() => {
         setShowRoundEndModal(false);
-        if (round >= 1) setIsRoundLeaderboardOpen(true);
-      }, 6000);
+        setIsRoundLeaderboardOpen(true);
+      }, 3000);
     });
+
     newSocket.on('game-over', () => {
       setGameCompleted(true);
       submitFinalScore();

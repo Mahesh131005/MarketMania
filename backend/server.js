@@ -20,6 +20,7 @@ import { initialiseDatabase, sql } from "./config/initailiseDatabase.js";
 import COMPANY_EVENTS from "../frontend/src/companyEvents.json" with { type: "json" };
 import GENERAL_EVENTS from "../frontend/src/generalEvents.json" with { type: "json" };
 import HISTORICAL_EVENTS from "../frontend/src/eventsforall.json" with { type: "json" };
+import { getGlobalStockPrices, updateGlobalStockPrices, seedGlobalStocks } from './utils/stockFetcher.js';
 
 dotenv.config();
 
@@ -27,14 +28,19 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
 configurePassport();
-initialiseDatabase();
+// Initialise Database & Start Stock Updater
+initialiseDatabase().then(async () => {
+  await seedGlobalStocks(); // Seed stocks if empty
+  updateGlobalStockPrices(); // Then update prices
+  setInterval(updateGlobalStockPrices, 60 * 1000); // Update every minute
+});
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'random string',
@@ -330,22 +336,9 @@ io.on('connection', (socket) => {
       }
     }
   });
+});
 
-
-  // ... (imports)
-  import { updateGlobalStockPrices } from "./utils/stockFetcher.js";
-
-  // ... (existing code)
-
-  server.listen(PORT, async () => {
-    console.log("server is running on port 3000");
-
-    // Trigger initial update in background
-    updateGlobalStockPrices().catch(err => console.error("Initial stock update failed:", err));
-
-    // Schedule updates every 30 minutes (30 * 60 * 1000 ms)
-    setInterval(() => {
-      updateGlobalStockPrices().catch(err => console.error("Scheduled stock update failed:", err));
-    }, 30 * 60 * 1000);
-  });
+server.listen(PORT, async () => {
+  console.log("server is running on port 3000");
+});
 

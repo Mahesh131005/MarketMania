@@ -56,10 +56,14 @@ export const joinGame = async (req, res) => {
     console.log(`[joinGame] Rooms found: ${rooms.length}`);
     if (rooms.length === 0) return res.status(404).json({ exists: false, message: "Room not found" });
 
-    // NEW: Check for Ban
-    const kickCheck = await sql`SELECT kick_count FROM room_kicks WHERE game_id = ${roomID} AND user_id = ${userId}`;
-    if (kickCheck.length > 0 && kickCheck[0].kick_count > 2) {
-      return res.status(403).json({ exists: true, message: "You are banned from this room." });
+    // NEW: Check for Ban (Wrapped in try-catch to avoid 500 if table missing)
+    try {
+      const kickCheck = await sql`SELECT kick_count FROM room_kicks WHERE game_id = ${roomID} AND user_id = ${userId}`;
+      if (kickCheck.length > 0 && kickCheck[0].kick_count > 2) {
+        return res.status(403).json({ exists: true, message: "You are banned from this room." });
+      }
+    } catch (kickError) {
+      console.warn("Room kicks check failed (table might be missing), proceeding:", kickError.message);
     }
 
     // 1. Check Max Players
@@ -69,30 +73,12 @@ export const joinGame = async (req, res) => {
     console.log(`[joinGame] Current players: ${currentCount}, Max players: ${maxPlayers}`);
 
     const participantCheck = await sql`SELECT * FROM game_participants WHERE game_id = ${roomID} AND user_id = ${userId}`;
-<<<<<<< HEAD
-    console.log(`[joinGame] Participant check: ${participantCheck.length > 0 ? 'Found' : 'Not found'}`);
-=======
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 
     if (participantCheck.length === 0) {
       if (currentCount >= maxPlayers) {
         return res.status(403).json({ exists: true, message: "Room is full!" });
       }
-<<<<<<< HEAD
-      try {
-        await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
-        console.log(`[joinGame] Added participant ${userId}`);
-      } catch (insertError) {
-        // Ignore duplicate key violation (race condition)
-        if (insertError.code === '23505') {
-          console.log(`[joinGame] Participant ${userId} already added (race condition handled)`);
-        } else {
-          throw insertError;
-        }
-      }
-=======
       await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
     }
 
     const room = rooms[0];
@@ -139,12 +125,7 @@ export const getPublicRooms = async (req, res) => {
 // NEW: Chat GPT Learning (Simulated)
 export const askAI = async (req, res) => {
   try {
-<<<<<<< HEAD
-
-    const { userId, question } = req.body;
-=======
     const { userId } = req.body;
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 
     if (!userId) {
       return res.status(400).json({
@@ -168,7 +149,6 @@ export const askAI = async (req, res) => {
       : "No games played yet.";
 
     const prompt = `
-<<<<<<< HEAD
 You are a stock market coach for the game "Market Mania".
 
 The user (Player ID: ${userId}) has asked: "${question}"
@@ -176,7 +156,6 @@ The user (Player ID: ${userId}) has asked: "${question}"
 Provide a helpful, educational answer about stock trading, game strategy, or market concepts. 
 Keep it concise (under 3 sentences if possible) and encouraging. 
 If the question is unrelated to finance/trading/game, politley steer them back.
-=======
 You are a stock market coach in a game called Market Mania.
 
 Analyze this player's recent game history (last 5 games):
@@ -193,7 +172,6 @@ Include:
 3. One high-level strategy suggestion (e.g. "Focus on high volatility stocks" or "Diversify more").
 
 Keep it concise (max 150 words) and encouraging.
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 `;
 
     // Try multiple free tier models
@@ -439,6 +417,7 @@ export const getFinalLeaderboard = async (req, res) => {
   }
 };
 
+// ✅ Get game lobby details (Players + Room Settings)
 export const getGameLobby = async (req, res) => {
   try {
     const { gameId } = req.params;
@@ -447,17 +426,22 @@ export const getGameLobby = async (req, res) => {
       return res.status(400).json({ error: "Game ID is required." });
     }
 
+    // Join with users table to get details
     const players = await sql`
-      SELECT u.user_id, u.full_name, u.avatar
+      SELECT u.user_id, u.full_name, u.avatar, u.email
       FROM users u
       JOIN game_participants gp ON u.user_id = gp.user_id
       WHERE gp.game_id = ${gameId}
     `;
-    console.log(`[getGameLobby] Fetched players for ${gameId}:`, players);
+    console.log(`[getGameLobby] Fetched ${players.length} players for ${gameId}`);
 
     const room = await sql`
       SELECT * FROM game_rooms WHERE room_id = ${gameId}
     `;
+
+    if (room.length === 0) {
+      return res.status(404).json({ error: "Room not found" });
+    }
 
     res.status(200).json({ players, room: room[0] });
   } catch (error) {
@@ -466,6 +450,7 @@ export const getGameLobby = async (req, res) => {
   }
 }
 
+// ✅ Get Game Stocks
 export const getGameStocks = async (req, res) => {
   try {
     const { gameId } = req.params;
@@ -474,11 +459,18 @@ export const getGameStocks = async (req, res) => {
       return res.status(400).json({ error: "Game ID is required." });
     }
 
+    // Ensure we select all necessary fields matching frontend expectations
     const stocks = await sql`
       SELECT stock_name as name, price, pe_ratio as pe, sectors, total_volume, volatility
       FROM game_stocks
       WHERE game_id = ${gameId}
     `;
+
+    console.log(`[getGameStocks] Fetched ${stocks.length} stocks for ${gameId}`);
+
+    if (stocks.length === 0) {
+      console.warn(`[getGameStocks] Warning: No stocks found for game ${gameId}`);
+    }
 
     res.status(200).json(stocks);
   } catch (error) {
@@ -487,7 +479,6 @@ export const getGameStocks = async (req, res) => {
   }
 }
 
-<<<<<<< HEAD
 // ✅ Kick Player
 export const kickPlayer = async (req, res) => {
   try {
@@ -529,7 +520,6 @@ export const kickPlayer = async (req, res) => {
     res.status(500).json({ error: "Failed to kick player." });
   }
 };
-=======
 export const getGameStockHistory = async (req, res) => {
   try {
     const { gameId } = req.params;
@@ -548,4 +538,3 @@ export const getGameStockHistory = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch stock history" });
   }
 };
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c

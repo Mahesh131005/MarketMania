@@ -27,6 +27,10 @@ export const getUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
 
+    if (!userId || userId === "undefined" || userId === "null") {
+      return res.status(400).json({ error: "Invalid User ID" });
+    }
+
     const gamesPlayedResult = await sql`
             SELECT COUNT(*) FROM final_scores WHERE user_id = ${userId};
         `;

@@ -90,7 +90,9 @@ function PublicRoomsList() {
           <Button
             size="sm"
             className="mt-3 w-full"
-            onClick={() => navigate(`/lobby/${room.room_id}`)}
+            onClick={() => {
+              navigate(`/lobby/${room.room_id}`);
+            }}
             disabled={room.current_players >= room.max_players}
           >
             {room.current_players >= room.max_players ? "Full" : "Join"}

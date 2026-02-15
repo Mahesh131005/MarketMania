@@ -17,6 +17,8 @@ import {
 import { askAI, listModels } from "../controllers/gameControllers.js";
 const router = express.Router();
 
+router.get('/public', getPublicRooms); // MOVED TO TOP
+
 // Room management routes
 
 router.post('/create', createRoom);
@@ -38,7 +40,7 @@ router.get('/:gameId/lobby', getGameLobby);
 router.get('/:gameId/stocks', getGameStocks);
 router.get('/:gameId/history', getGameStockHistory);
 
-router.get('/public', getPublicRooms); // NEW
+router.get('/:gameId/history', getGameStockHistory);
 router.post('/learn', askAI); // NEW
 router.get('/list-models', listModels); // DEBUG
 

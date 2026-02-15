@@ -23,13 +23,16 @@ export default function LobbyPage() {
             return;
           }
           const user = JSON.parse(userString);
-          const user_id = user.user_id;
+          // Robustly get user ID (handle potential key differences)
+          const user_id = user.user_id || user.id || user.userId || user.google_id;
 
-          console.log(`[LobbyPage] Joining room: ${roomId} with user: ${user_id}`);
+          console.log(`[LobbyPage] Joining room: ${roomId}`, { user });
+
           if (!roomId || !user_id) {
-            console.error("Missing roomId or user_id", { roomId, user_id });
-            alert("Invalid room or user information.");
-            navigate('/user-home');
+            console.error("Missing roomId or user_id", { roomId, user_id, user });
+            alert("Session invalid or expired. Please login again.");
+            localStorage.removeItem('user'); // Clear invalid session
+            window.location.href = '/login'; // Force reload/redirect
             return;
           }
 
