@@ -1,8 +1,8 @@
 import express from 'express';
 import {
-  createRoom, 
-  addChatMessage, 
-  getGameChats, 
+  createRoom,
+  addChatMessage,
+  getGameChats,
   joinGame,
   submitPlayerScore,
   getRoundLeaderboard,
@@ -10,7 +10,8 @@ import {
   getFinalLeaderboard,
   getGameLobby,
   getPublicRooms,
-  getGameStocks
+  getGameStocks,
+  getGameStockHistory
 } from '../controllers/gameControllers.js';
 import { askAI } from "../controllers/gameControllers.js";
 const router = express.Router();
@@ -33,6 +34,7 @@ router.get('/:gameId/final-leaderboard', getFinalLeaderboard);
 // Game data routes
 router.get('/:gameId/lobby', getGameLobby);
 router.get('/:gameId/stocks', getGameStocks);
+router.get('/:gameId/history', getGameStockHistory);
 
 router.get('/public', getPublicRooms); // NEW
 router.post('/learn', askAI); // NEW

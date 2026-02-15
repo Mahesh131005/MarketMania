@@ -47,8 +47,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
+  origin: 'http://localhost:5173',
+  credentials: true,
 }));
 app.use(helmet());
 app.use(morgan("dev"));
@@ -57,7 +57,7 @@ const PORT = process.env.PORT || 3000;
 const gameStates = {};
 
 // Helper to run market events (Same as before)
-const runMarketEvents = (gameId) => {
+const runMarketEvents = async (gameId) => {
   const gameState = gameStates[gameId];
   if (!gameState) return;
 
@@ -100,7 +100,25 @@ const runMarketEvents = (gameId) => {
     });
     gameState.stocks = updatedStocks;
     io.to(gameId).emit('price-update', updatedStocks);
+
   }
+
+  // Ensure we have current stocks even if no events happened
+  let currentStocks = gameState.stocks;
+
+  // Save history for graph (Run every round)
+  try {
+    for (const stock of currentStocks) {
+      await sql`
+        INSERT INTO game_stock_history (game_id, round_number, stock_name, price)
+        VALUES (${gameId}, ${gameState.round}, ${stock.name}, ${stock.price})
+        ON CONFLICT (game_id, round_number, stock_name) DO NOTHING
+      `;
+    }
+  } catch (err) {
+    console.error("Error saving stock history:", err);
+  }
+
 
   let notices = [];
   let newEvents = [];
@@ -155,14 +173,14 @@ io.on('connection', (socket) => {
     if (gameStates[roomId]) return;
 
     io.to(roomId).emit('game-started');
-    
+
     // Update DB status to 'in_progress'
     await sql`UPDATE games SET game_status = 'in_progress' WHERE game_id = ${roomId}`;
 
     try {
       const roomSettingsRes = await sql`SELECT round_time, num_rounds FROM game_rooms WHERE room_id = ${roomId}`;
       if (roomSettingsRes.length === 0) return;
-      
+
       const settings = roomSettingsRes[0];
       const roundTimeMs = settings.round_time * 1000; // e.g., 30000ms
       const numRounds = settings.num_rounds;
@@ -187,7 +205,7 @@ io.on('connection', (socket) => {
         timeout: null // Using timeout instead of interval
       };
 
-      const runRound = () => {
+      const runRound = async () => {
         const gameState = gameStates[roomId];
         if (!gameState) return;
 
@@ -209,12 +227,12 @@ io.on('connection', (socket) => {
         gameState.timeout = setTimeout(() => {
           console.log(`Round ${gameState.round} ended. Showing leaderboard.`);
           io.to(roomId).emit('round-ended'); // Triggers leaderboard on frontend
-          
+
           // Schedule Next Round
           gameState.timeout = setTimeout(() => {
             runRound();
           }, breakTimeMs);
-          
+
         }, roundTimeMs);
       };
 
@@ -227,10 +245,25 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-   console.log('user disconnected');//just for now
+    console.log('user disconnected');//just for now
   });
 });
 
-server.listen(PORT, () => {
+
+// ... (imports)
+import { updateGlobalStockPrices } from "./utils/stockFetcher.js";
+
+// ... (existing code)
+
+server.listen(PORT, async () => {
   console.log("server is running on port 3000");
+
+  // Trigger initial update in background
+  updateGlobalStockPrices().catch(err => console.error("Initial stock update failed:", err));
+
+  // Schedule updates every 30 minutes (30 * 60 * 1000 ms)
+  setInterval(() => {
+    updateGlobalStockPrices().catch(err => console.error("Scheduled stock update failed:", err));
+  }, 30 * 60 * 1000);
 });
+

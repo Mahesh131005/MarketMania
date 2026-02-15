@@ -1,6 +1,7 @@
 import { sql } from "../config/initailiseDatabase.js";
-import ALL_COMPANIES from "../../frontend/src/Companysectors.json" with { type: "json" };
+import { getGlobalStockPrices } from "../utils/stockFetcher.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const shuffleArray = (array) => {
@@ -18,7 +19,7 @@ export const createRoom = async (req, res) => {
   // Ensure you include the existing createRoom code here
   try {
     const { roomID, name: room_name, numStocks, roundTime, maxPlayers, initialMoney, numRounds, createdBy } = req.body;
-    
+
     // ... validation ...
     const userExists = await sql`SELECT * FROM users WHERE user_id = ${createdBy}`;
     if (userExists.length === 0) return res.status(400).json({ message: "Creator user does not exist" });
@@ -27,10 +28,14 @@ export const createRoom = async (req, res) => {
     await sql`INSERT INTO games (game_id, created_by_user_id) VALUES (${roomID}, ${createdBy})`;
     await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${createdBy})`;
 
+
+    const ALL_COMPANIES = await getGlobalStockPrices();
     const selectedStocks = shuffleArray(ALL_COMPANIES).slice(0, numStocks);
+
     for (const stock of selectedStocks) {
       await sql`INSERT INTO game_stocks (game_id, stock_name, price, pe_ratio, sectors, total_volume, volatility) VALUES (${roomID}, ${stock.name}, ${stock.price}, ${stock.pe}, ${stock.sectors}, ${stock.totalVolume}, ${stock.volatility})`;
     }
+
 
     res.status(201).json({ success: true, roomID, message: "Room created successfully" });
   } catch (err) {
@@ -52,12 +57,12 @@ export const joinGame = async (req, res) => {
     const maxPlayers = rooms[0].max_players;
 
     const participantCheck = await sql`SELECT * FROM game_participants WHERE game_id = ${roomID} AND user_id = ${userId}`;
-    
+
     if (participantCheck.length === 0) {
-        if (currentCount >= maxPlayers) {
-            return res.status(403).json({ exists: true, message: "Room is full!" });
-        }
-        await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
+      if (currentCount >= maxPlayers) {
+        return res.status(403).json({ exists: true, message: "Room is full!" });
+      }
+      await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
     }
 
     const room = rooms[0];
@@ -382,3 +387,22 @@ export const getGameStocks = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error: Failed to fetch game stocks." });
   }
 }
+
+export const getGameStockHistory = async (req, res) => {
+  try {
+    const { gameId } = req.params;
+    if (!gameId) return res.status(400).json({ error: "Game ID required" });
+
+    const history = await sql`
+      SELECT round_number, stock_name, price
+      FROM game_stock_history
+      WHERE game_id = ${gameId}
+      ORDER BY round_number ASC
+    `;
+
+    res.status(200).json(history);
+  } catch (error) {
+    console.error("Error fetching history:", error);
+    res.status(500).json({ error: "Failed to fetch stock history" });
+  }
+};

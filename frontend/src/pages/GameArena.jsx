@@ -4,6 +4,8 @@ import ChatPage from './ChatPage';
 import RoundLeaderboard from '../components/RoundLeaderboard';
 import FinalLeaderboard from '../components/FinalLeaderboard';
 import { io } from "socket.io-client";
+import StockGraph from '../components/StockGraph';
+import { LineChart } from "lucide-react";
 
 // --- UI Components (no changes) ---
 const Button = ({ children, onClick, variant, className = "", disabled }) => {
@@ -11,7 +13,7 @@ const Button = ({ children, onClick, variant, className = "", disabled }) => {
   const styles = variant === "destructive" ? "bg-red-600 hover:bg-red-700 focus:ring-red-500" : variant === "secondary" ? "bg-gray-600 hover:bg-gray-700 focus:ring-gray-500" : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500";
   return (<button onClick={onClick} className={`${base} ${styles} ${className}`} disabled={disabled}>{children}</button>);
 };
-const Input = (props) => (<input {...props} className={`p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props.className}`}/>);
+const Input = (props) => (<input {...props} className={`p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 ${props.className}`} />);
 const Card = ({ children, className = "" }) => (<div className={`bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow ${className}`}>{children}</div>);
 const CardHeader = ({ children }) => <div className="p-3 border-b border-gray-200">{children}</div>;
 const CardTitle = ({ children }) => <h3 className="text-base font-bold text-gray-900">{children}</h3>;
@@ -31,14 +33,21 @@ export default function GameArena() {
   if (!roomSettings) {
     return <Navigate to="/user-home" replace />;
   }
-  
+
   const [quantity, setQuantity] = useState({});
   const [feedback, setFeedback] = useState({ message: "", type: "" });
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isRoundLeaderboardOpen, setIsRoundLeaderboardOpen] = useState(false);
   const [isFinalLeaderboardOpen, setIsFinalLeaderboardOpen] = useState(false);
+  const [isGraphOpen, setIsGraphOpen] = useState(false);
+  const [selectedGraphStock, setSelectedGraphStock] = useState("");
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
+
+  const openGraph = (stockName) => {
+    setSelectedGraphStock(stockName);
+    setIsGraphOpen(true);
+  };
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showRoundEndModal, setShowRoundEndModal] = useState(false);
 
@@ -76,7 +85,7 @@ export default function GameArena() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(scoreData),
       });
-       if (!response.ok) throw new Error('Failed to submit score to server');
+      if (!response.ok) throw new Error('Failed to submit score to server');
     } catch (error) {
       console.error('Error submitting score:', error);
     } finally {
@@ -147,12 +156,12 @@ export default function GameArena() {
     let shortLiability = 0;
 
     stocks.forEach(stock => {
-        const quantity = holdings[stock.name] || 0;
-        if (quantity > 0) {
-            longValue += quantity * stock.price;
-        } else if (quantity < 0) {
-            shortLiability += Math.abs(quantity) * stock.price;
-        }
+      const quantity = holdings[stock.name] || 0;
+      if (quantity > 0) {
+        longValue += quantity * stock.price;
+      } else if (quantity < 0) {
+        shortLiability += Math.abs(quantity) * stock.price;
+      }
     });
 
     const netPortfolioValue = longValue - shortLiability;
@@ -202,7 +211,7 @@ export default function GameArena() {
 
     const stockToTrade = stocks.find((s) => s.name === stockName);
     if (!stockToTrade) return { success: false, message: "Stock not found." };
-    
+
     const cost = stockToTrade.price * numQuantity;
     const currentHolding = holdings[stockName] || 0;
 
@@ -217,7 +226,7 @@ export default function GameArena() {
       ...h,
       [stockName]: (h[stockName] || 0) + numQuantity,
     }));
-    
+
     const action = currentHolding < 0 ? "Covered" : "Bought";
     return { success: true, message: `${action} ${numQuantity} of ${stockName}.` };
   }, [money, stocks, holdings]);
@@ -225,7 +234,7 @@ export default function GameArena() {
   const sellStock = useCallback((stockName, quantity) => {
     const numQuantity = parseInt(quantity, 10);
     if (isNaN(numQuantity) || numQuantity <= 0) return { success: false, message: "Invalid quantity." };
-    
+
     const stockToTrade = stocks.find((s) => s.name === stockName);
     if (!stockToTrade) return { success: false, message: "Stock not found." };
 
@@ -275,11 +284,11 @@ export default function GameArena() {
   const holdingsList = Object.entries(holdings)
     .filter(([_, qty]) => qty !== 0)
     .map(([name, qty]) => {
-        const stock = stocks.find((s) => s.name === name);
-        const currentPrice = stock?.price || 0;
-        const value = currentPrice * qty; // This will be negative for short positions
-        const positionType = qty > 0 ? "Long" : "Short";
-        return { name, qty, value, positionType, currentPrice };
+      const stock = stocks.find((s) => s.name === name);
+      const currentPrice = stock?.price || 0;
+      const value = currentPrice * qty; // This will be negative for short positions
+      const positionType = qty > 0 ? "Long" : "Short";
+      return { name, qty, value, positionType, currentPrice };
     });
 
   if (!initialStocks) return <div className="flex items-center justify-center h-screen">Loading game data...</div>
@@ -300,7 +309,16 @@ export default function GameArena() {
             <Card key={stock.name} className="mb-3">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle>{stock.name}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <CardTitle>{stock.name}</CardTitle>
+                    <button
+                      onClick={() => openGraph(stock.name)}
+                      className="p-1 hover:bg-gray-100 rounded-full transition-colors text-indigo-600"
+                      title="View Price History"
+                    >
+                      <LineChart size={18} />
+                    </button>
+                  </div>
                   <span className="text-lg font-bold text-gray-800">₹{stock.price.toFixed(2)}</span>
                 </div>
               </CardHeader>
@@ -309,7 +327,7 @@ export default function GameArena() {
                   <span>PE: {stock.pe}</span>
                   {/* --- SHORT/LONG ---: Show position type in owned display */}
                   <span className="font-semibold">
-                    Position: {holdings[stock.name] > 0 ? `Long ${holdings[stock.name]}` : holdings[stock.name] < 0 ? `Short ${Math.abs(holdings[stock.name])}`: 'None'}
+                    Position: {holdings[stock.name] > 0 ? `Long ${holdings[stock.name]}` : holdings[stock.name] < 0 ? `Short ${Math.abs(holdings[stock.name])}` : 'None'}
                   </span>
                 </div>
                 <div className="flex gap-2 items-center">
@@ -327,14 +345,15 @@ export default function GameArena() {
 
       <main className="flex-1 p-6 flex flex-col gap-6">
         <div className="flex items-center justify-end gap-4">
-            <Button 
-              variant="secondary" 
-              onClick={() => setIsRoundLeaderboardOpen(true)}
-              disabled={isSubmittingScore || round < 1}
-            >
-              📊 Round Leaderboard
-            </Button>
-           <Button variant="secondary" onClick={() => setIsChatOpen(true)}>💬 Chat</Button>
+          <Button
+            variant="secondary"
+            onClick={() => setIsRoundLeaderboardOpen(true)}
+            disabled={isSubmittingScore || round < 1}
+          >
+            📊 Round Leaderboard
+          </Button>
+          {/* Global graph button removed */}
+          <Button variant="secondary" onClick={() => setIsChatOpen(true)}>💬 Chat</Button>
         </div>
 
         <div>
@@ -382,13 +401,13 @@ export default function GameArena() {
           {feedback.message}
         </div>
       )}
-      
+
       {showRoundEndModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-fade-in">
-            <div className="bg-white p-10 rounded-xl shadow-2xl text-center transform animate-scale-in">
-                <h2 className="text-4xl font-bold text-indigo-700">Round {round - 1} Completed!</h2>
-                <p className="mt-2 text-gray-600">Updating prices and preparing next round...</p>
-            </div>
+          <div className="bg-white p-10 rounded-xl shadow-2xl text-center transform animate-scale-in">
+            <h2 className="text-4xl font-bold text-indigo-700">Round {round - 1} Completed!</h2>
+            <p className="mt-2 text-gray-600">Updating prices and preparing next round...</p>
+          </div>
         </div>
       )}
 
@@ -410,6 +429,13 @@ export default function GameArena() {
         gameId={gameId}
         chatOpen={isChatOpen}
         setChatOpen={setIsChatOpen}
+      />
+
+      <StockGraph
+        gameId={gameId}
+        isOpen={isGraphOpen}
+        onClose={() => setIsGraphOpen(false)}
+        defaultStock={selectedGraphStock}
       />
     </div>
   );
