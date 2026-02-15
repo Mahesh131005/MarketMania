@@ -11,11 +11,8 @@ import {
   getGameLobby,
   getPublicRooms,
   getGameStocks,
-<<<<<<< HEAD
-  kickPlayer
-=======
+  kickPlayer,
   getGameStockHistory
->>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 } from '../controllers/gameControllers.js';
 import { askAI, listModels } from "../controllers/gameControllers.js";
 const router = express.Router();
