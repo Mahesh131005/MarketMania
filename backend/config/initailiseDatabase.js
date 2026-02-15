@@ -136,6 +136,7 @@ export async function initialiseDatabase() {
         UNIQUE(game_id, user_id)
     );
     `;
+
     // --- NEW: Added game_stocks table to store the stocks for each game ---
     await sql`
       CREATE TABLE IF NOT EXISTS game_stocks (
@@ -150,6 +151,33 @@ export async function initialiseDatabase() {
         UNIQUE(game_id, stock_name)
       );
     `;
+
+    // --- NEW: Added global_stocks for live price tracking ---
+    await sql`
+      CREATE TABLE IF NOT EXISTS global_stocks (
+          stock_name VARCHAR(100) PRIMARY KEY,
+          price DECIMAL(15,2) NOT NULL,
+          pe_ratio DECIMAL(10,2),
+          sectors TEXT[],
+          total_volume INTEGER,
+          volatility DECIMAL(5,4),
+          last_updated TIMESTAMP DEFAULT NOW()
+      );
+    `;
+
+    // --- NEW: Added game_stock_history to track price changes per round ---
+    await sql`
+      CREATE TABLE IF NOT EXISTS game_stock_history (
+          history_id SERIAL PRIMARY KEY,
+          game_id VARCHAR(100) REFERENCES games(game_id) ON DELETE CASCADE,
+          round_number INTEGER NOT NULL,
+          stock_name VARCHAR(100) NOT NULL,
+          price DECIMAL(15,2) NOT NULL,
+          recorded_at TIMESTAMP DEFAULT NOW(),
+          UNIQUE(game_id, round_number, stock_name)
+      );
+    `;
+
 
     //sample end
     await sql`

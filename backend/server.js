@@ -57,7 +57,7 @@ const PORT = process.env.PORT || 3000;
 const gameStates = {};
 
 // Helper to run market events (Same as before)
-const runMarketEvents = (gameId) => {
+const runMarketEvents = async (gameId) => {
   const gameState = gameStates[gameId];
   if (!gameState) return;
 
@@ -100,7 +100,25 @@ const runMarketEvents = (gameId) => {
     });
     gameState.stocks = updatedStocks;
     io.to(gameId).emit('price-update', updatedStocks);
+
   }
+
+  // Ensure we have current stocks even if no events happened
+  let currentStocks = gameState.stocks;
+
+  // Save history for graph (Run every round)
+  try {
+    for (const stock of currentStocks) {
+      await sql`
+        INSERT INTO game_stock_history (game_id, round_number, stock_name, price)
+        VALUES (${gameId}, ${gameState.round}, ${stock.name}, ${stock.price})
+        ON CONFLICT (game_id, round_number, stock_name) DO NOTHING
+      `;
+    }
+  } catch (err) {
+    console.error("Error saving stock history:", err);
+  }
+
 
   let notices = [];
   let newEvents = [];
@@ -236,7 +254,7 @@ io.on('connection', (socket) => {
         timeout: null // Using timeout instead of interval
       };
 
-      const runRound = () => {
+      const runRound = async () => {
         const gameState = gameStates[roomId];
         if (!gameState) return;
 
@@ -281,6 +299,7 @@ io.on('connection', (socket) => {
     }
   });
 
+<<<<<<< HEAD
   socket.on('disconnect', async () => {
     console.log('user disconnected:', socket.id);
 
@@ -311,9 +330,28 @@ io.on('connection', (socket) => {
         console.error("Error handling disconnect cleanup:", err);
       }
     }
+=======
+  socket.on('disconnect', () => {
+    console.log('user disconnected');//just for now
+>>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
   });
 });
 
-server.listen(PORT, () => {
+
+// ... (imports)
+import { updateGlobalStockPrices } from "./utils/stockFetcher.js";
+
+// ... (existing code)
+
+server.listen(PORT, async () => {
   console.log("server is running on port 3000");
+
+  // Trigger initial update in background
+  updateGlobalStockPrices().catch(err => console.error("Initial stock update failed:", err));
+
+  // Schedule updates every 30 minutes (30 * 60 * 1000 ms)
+  setInterval(() => {
+    updateGlobalStockPrices().catch(err => console.error("Scheduled stock update failed:", err));
+  }, 30 * 60 * 1000);
 });
+

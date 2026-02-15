@@ -5,6 +5,8 @@ import ChatPage from './ChatPage';
 import RoundLeaderboard from '../components/RoundLeaderboard';
 import FinalLeaderboard from '../components/FinalLeaderboard';
 import { io } from "socket.io-client";
+import StockGraph from '../components/StockGraph';
+import { LineChart } from "lucide-react";
 
 // --- UI Components (no changes) ---
 const Button = ({ children, onClick, variant, className = "", disabled }) => {
@@ -42,8 +44,15 @@ export default function GameArena() {
   const [isFinalLeaderboardOpen, setIsFinalLeaderboardOpen] = useState(false);
   const [isPlayerListOpen, setIsPlayerListOpen] = useState(false); // NEW
   const [players, setPlayers] = useState([]); // NEW
+  const [isGraphOpen, setIsGraphOpen] = useState(false);
+  const [selectedGraphStock, setSelectedGraphStock] = useState("");
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
+
+  const openGraph = (stockName) => {
+    setSelectedGraphStock(stockName);
+    setIsGraphOpen(true);
+  };
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showRoundEndModal, setShowRoundEndModal] = useState(false);
 
@@ -410,7 +419,16 @@ export default function GameArena() {
             <Card key={stock.name} className="mb-3">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle>{stock.name}</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <CardTitle>{stock.name}</CardTitle>
+                    <button
+                      onClick={() => openGraph(stock.name)}
+                      className="p-1 hover:bg-gray-100 rounded-full transition-colors text-indigo-600"
+                      title="View Price History"
+                    >
+                      <LineChart size={18} />
+                    </button>
+                  </div>
                   <span className="text-lg font-bold text-gray-800">₹{stock.price.toFixed(2)}</span>
                 </div>
               </CardHeader>
@@ -444,6 +462,7 @@ export default function GameArena() {
           >
             📊 Round Leaderboard
           </Button>
+
           <Button variant="secondary" onClick={() => setIsChatOpen(true)}>💬 Chat</Button>
         </div>
 
@@ -544,6 +563,13 @@ export default function GameArena() {
         setChatOpen={setIsChatOpen}
         currentRound={round}
       />
-    </div>
+
+      <StockGraph
+        gameId={gameId}
+        isOpen={isGraphOpen}
+        onClose={() => setIsGraphOpen(false)}
+        defaultStock={selectedGraphStock}
+      />
+    </div >
   );
 }

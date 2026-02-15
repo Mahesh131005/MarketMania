@@ -7,6 +7,26 @@ import { motion } from 'framer-motion';
 // Imports for Edit Profile Modal
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
+import { Loader2, BookOpen } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+
+// Catches ReactMarkdown render errors so the page doesn't go blank
+class MarkdownErrorBoundary extends React.Component {
+    state = { hasError: false };
+    static getDerivedStateFromError() {
+        return { hasError: true };
+    }
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="text-base md:text-lg text-gray-800 leading-relaxed whitespace-pre-wrap">
+                    {this.props.fallbackText}
+                </div>
+            );
+        }
+        return this.props.children;
+    }
+}
 
 const ProfilePage = () => {
     const [user, setUser] = useState(null);
@@ -17,6 +37,11 @@ const ProfilePage = () => {
     const [editName, setEditName] = useState("");
     const [editAvatar, setEditAvatar] = useState("");
     const [editDetails, setEditDetails] = useState("");
+
+    // State for Learning Modal
+    const [isLearningOpen, setIsLearningOpen] = useState(false);
+    const [learningAdvice, setLearningAdvice] = useState("");
+    const [isLearningLoading, setIsLearningLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -98,6 +123,36 @@ const ProfilePage = () => {
             }
         } catch (error) {
             console.error("Error updating profile:", error);
+        }
+    };
+
+
+    const handleStartLearning = async () => {
+        setIsLearningOpen(true);
+        if (learningAdvice) return; // Don't re-fetch if already loaded
+
+        setIsLearningLoading(true);
+        try {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (!storedUser) return;
+
+            const res = await fetch('http://localhost:3000/api/game/learn', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: storedUser.user_id })
+            });
+            const data = await res.json();
+            const text = typeof data.answer === "string" ? data.answer.trim() : "";
+            if (text) {
+                setLearningAdvice(text);
+            } else {
+                setLearningAdvice("Unable to get advice at this time.");
+            }
+        } catch (error) {
+            console.error(error);
+            setLearningAdvice("Error connecting to the coach.");
+        } finally {
+            setIsLearningLoading(false);
         }
     };
 
@@ -223,12 +278,75 @@ const ProfilePage = () => {
                                 <p className="text-4xl font-bold text-green-500">{stats.wins}</p>
                             </CardContent>
                         </Card>
-                        <Card className="border border-sky-100 shadow-lg rounded-2xl">
+                        <Card className="border border-sky-100 shadow-lg rounded-2xl overflow-hidden">
                             <CardHeader>
-                                <CardTitle>Learning</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <BookOpen className="text-sky-600 size-5" /> Learning
+                                </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <Button className="bg-sky-600 hover:bg-sky-700 text-white">Start Learning</Button>
+                                <Dialog open={isLearningOpen} onOpenChange={setIsLearningOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            className="w-full h-12 bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-700 hover:to-sky-600 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-3 justify-center rounded-xl border-0"
+                                            onClick={handleStartLearning}
+                                        >
+                                            <BookOpen size={20} className="shrink-0" /> Start Learning
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] overflow-hidden flex flex-col rounded-2xl border-2 border-sky-100 shadow-2xl">
+                                        <DialogHeader className="pb-4 border-b border-sky-100">
+                                            <DialogTitle className="flex items-center gap-3 text-2xl md:text-3xl font-bold text-sky-800">
+                                                <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-sky-100 text-sky-600">
+                                                    <BookOpen className="size-6" />
+                                                </span>
+                                                Personalized Market Coach
+                                            </DialogTitle>
+                                        </DialogHeader>
+                                        <div className="flex-1 overflow-y-auto py-6 min-h-[200px]">
+                                            {isLearningLoading ? (
+                                                <div className="flex flex-col items-center justify-center py-16 space-y-6">
+                                                    <Loader2 className="h-14 w-14 animate-spin text-sky-500" />
+                                                    <p className="text-sky-700 font-medium">Analyzing your trading history...</p>
+                                                    <p className="text-sm text-gray-500">Your coach is preparing personalized advice</p>
+                                                </div>
+                                            ) : !learningAdvice.trim() ? (
+                                                <div className="rounded-2xl bg-gradient-to-br from-sky-50 to-white border-2 border-sky-100 p-6 md:p-8 shadow-inner text-center text-gray-500">
+                                                    No advice available. Please try again.
+                                                </div>
+                                            ) : (
+                                                <div className="rounded-2xl bg-gradient-to-br from-sky-50 to-white border-2 border-sky-100 p-6 md:p-8 shadow-inner">
+                                                    <MarkdownErrorBoundary fallbackText={learningAdvice}>
+                                                        <ReactMarkdown
+                                                            className="learning-response text-base md:text-lg text-gray-800 leading-relaxed font-[450] tracking-wide space-y-4"
+                                                            components={{
+                                                                p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
+                                                                strong: ({ children }) => <strong className="font-bold text-sky-800">{children}</strong>,
+                                                                ul: ({ children }) => <ul className="list-disc list-inside space-y-2 my-4 pl-2">{children}</ul>,
+                                                                ol: ({ children }) => <ol className="list-decimal list-inside space-y-2 my-4 pl-2">{children}</ol>,
+                                                                li: ({ children }) => <li className="ml-2">{children}</li>,
+                                                                h2: ({ children }) => <h2 className="text-xl font-bold text-sky-700 mt-6 mb-2 first:mt-0">{children}</h2>,
+                                                                h3: ({ children }) => <h3 className="text-lg font-semibold text-sky-600 mt-4 mb-2">{children}</h3>,
+                                                                br: () => <br />,
+                                                            }}
+                                                        >
+                                                            {String(learningAdvice)}
+                                                        </ReactMarkdown>
+                                                    </MarkdownErrorBoundary>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="flex justify-end pt-4 border-t border-sky-100">
+                                            <Button
+                                                variant="outline"
+                                                onClick={() => setIsLearningOpen(false)}
+                                                className="rounded-xl px-6 border-sky-200 text-sky-700 hover:bg-sky-50 hover:border-sky-300"
+                                            >
+                                                Close
+                                            </Button>
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
                             </CardContent>
                         </Card>
                     </motion.div>

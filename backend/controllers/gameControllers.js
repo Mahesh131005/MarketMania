@@ -1,6 +1,7 @@
 import { sql } from "../config/initailiseDatabase.js";
-import ALL_COMPANIES from "../../frontend/src/Companysectors.json" with { type: "json" };
+import { getGlobalStockPrices } from "../utils/stockFetcher.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const shuffleArray = (array) => {
@@ -30,10 +31,14 @@ export const createRoom = async (req, res) => {
     await sql`INSERT INTO games (game_id, created_by_user_id) VALUES (${roomID}, ${createdBy})`;
     await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${createdBy})`;
 
+
+    const ALL_COMPANIES = await getGlobalStockPrices();
     const selectedStocks = shuffleArray(ALL_COMPANIES).slice(0, numStocks);
+
     for (const stock of selectedStocks) {
       await sql`INSERT INTO game_stocks (game_id, stock_name, price, pe_ratio, sectors, total_volume, volatility) VALUES (${roomID}, ${stock.name}, ${stock.price}, ${stock.pe}, ${stock.sectors}, ${stock.totalVolume}, ${stock.volatility})`;
     }
+
 
     res.status(201).json({ success: true, roomID, message: "Room created successfully" });
   } catch (err) {
@@ -64,12 +69,16 @@ export const joinGame = async (req, res) => {
     console.log(`[joinGame] Current players: ${currentCount}, Max players: ${maxPlayers}`);
 
     const participantCheck = await sql`SELECT * FROM game_participants WHERE game_id = ${roomID} AND user_id = ${userId}`;
+<<<<<<< HEAD
     console.log(`[joinGame] Participant check: ${participantCheck.length > 0 ? 'Found' : 'Not found'}`);
+=======
+>>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 
     if (participantCheck.length === 0) {
       if (currentCount >= maxPlayers) {
         return res.status(403).json({ exists: true, message: "Room is full!" });
       }
+<<<<<<< HEAD
       try {
         await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
         console.log(`[joinGame] Added participant ${userId}`);
@@ -81,6 +90,9 @@ export const joinGame = async (req, res) => {
           throw insertError;
         }
       }
+=======
+      await sql`INSERT INTO game_participants (game_id, user_id) VALUES (${roomID}, ${userId})`;
+>>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
     }
 
     const room = rooms[0];
@@ -127,8 +139,12 @@ export const getPublicRooms = async (req, res) => {
 // NEW: Chat GPT Learning (Simulated)
 export const askAI = async (req, res) => {
   try {
+<<<<<<< HEAD
 
     const { userId, question } = req.body;
+=======
+    const { userId } = req.body;
+>>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 
     if (!userId) {
       return res.status(400).json({
@@ -136,13 +152,23 @@ export const askAI = async (req, res) => {
       });
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    // 1. Fetch User's Last 5 Games
+    const history = await sql`
+      SELECT final_net_worth, final_rank, game_completed_at
+      FROM final_scores
+      WHERE user_id = ${userId}
+      ORDER BY game_completed_at DESC
+      LIMIT 5
+    `;
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp"
-    });
+    const historyText = history.length > 0
+      ? history.map((h, i) =>
+        `Game ${i + 1}: Rank ${h.final_rank}, Net Worth ${h.final_net_worth}`
+      ).join("\n")
+      : "No games played yet.";
 
     const prompt = `
+<<<<<<< HEAD
 You are a stock market coach for the game "Market Mania".
 
 The user (Player ID: ${userId}) has asked: "${question}"
@@ -150,23 +176,79 @@ The user (Player ID: ${userId}) has asked: "${question}"
 Provide a helpful, educational answer about stock trading, game strategy, or market concepts. 
 Keep it concise (under 3 sentences if possible) and encouraging. 
 If the question is unrelated to finance/trading/game, politley steer them back.
+=======
+You are a stock market coach in a game called Market Mania.
+
+Analyze this player's recent game history (last 5 games):
+${historyText}
+
+Reply using **Markdown** so it displays nicely:
+- Use **bold** for key terms (e.g. **consistent**, **diversify**).
+- Use ## for a short section heading like "Your assessment" and "Tips to improve".
+- Use bullet lists (- item) for the 3 specific tips.
+
+Include:
+1. A brief assessment of their performance trend (consistent, improving, or struggling).
+2. Three specific tips to improve their ranking and net worth.
+3. One high-level strategy suggestion (e.g. "Focus on high volatility stocks" or "Diversify more").
+
+Keep it concise (max 150 words) and encouraging.
+>>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
 `;
 
-    const result = await model.generateContent(prompt);
+    // Try multiple free tier models
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const freeModels = [
+      "gemini-1.5-flash",
+      "gemini-2.5-flash",
+      "gemini-3-flash-preview",
+      "gemini-1.0-pro"
+    ];
+
+    let aiReply = null;
+
+    // Try each model until one succeeds
+    for (const modelName of freeModels) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        aiReply = result.response.text().trim();
+        console.log(`✅ Success with model: ${modelName}`);
+        break; // Exit loop on first success
+      } catch (err) {
+        console.warn(`❌ Model ${modelName} failed:`, err.message);
+      }
+    }
+
+    // If all models failed, return friendly message
+    if (!aiReply) {
+      aiReply = "Sorry, the AI coach is currently unavailable. Please try again later.";
+    }
 
     res.json({
-      answer: result.response.text()
+      answer: aiReply
     });
 
   } catch (error) {
-
-    console.error("Gemini error:", error);
-
+    console.error("Error in askAI:", error);
     res.status(500).json({
-      error: error.message
+      error: "Failed to generate advice"
     });
   }
 };
+
+// Debug endpoint to list available models
+export const listModels = async (req, res) => {
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const models = await genAI.listModels();
+    res.json({ models: models.map(m => ({ name: m.name, supportedMethods: m.supportedMethods })) });
+  } catch (error) {
+    console.error("Error listing models:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export const addChatMessage = async (req, res) => {
   try {
     const { gameId } = req.params;
@@ -405,6 +487,7 @@ export const getGameStocks = async (req, res) => {
   }
 }
 
+<<<<<<< HEAD
 // ✅ Kick Player
 export const kickPlayer = async (req, res) => {
   try {
@@ -446,3 +529,23 @@ export const kickPlayer = async (req, res) => {
     res.status(500).json({ error: "Failed to kick player." });
   }
 };
+=======
+export const getGameStockHistory = async (req, res) => {
+  try {
+    const { gameId } = req.params;
+    if (!gameId) return res.status(400).json({ error: "Game ID required" });
+
+    const history = await sql`
+      SELECT round_number, stock_name, price
+      FROM game_stock_history
+      WHERE game_id = ${gameId}
+      ORDER BY round_number ASC
+    `;
+
+    res.status(200).json(history);
+  } catch (error) {
+    console.error("Error fetching history:", error);
+    res.status(500).json({ error: "Failed to fetch stock history" });
+  }
+};
+>>>>>>> 38478c6d08c2b111dff012a71c26266ba32b8d6c
