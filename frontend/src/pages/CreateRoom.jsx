@@ -31,7 +31,7 @@ export default function CreateRoom({ onRoomCreated }) {
   const [roomData, setRoomData] = useState({
     name: "",
     numStocks: "15",
-    roundTime: "8",
+    roundTime: "30",
     maxPlayers: "5",
     initialMoney: "500000",
     numRounds: "25"
@@ -52,6 +52,10 @@ export default function CreateRoom({ onRoomCreated }) {
 
     if (parseInt(roomData.numStocks) < 5 || parseInt(roomData.numStocks) > 50) {
       return setError("Number of stocks must be between 5 and 50");
+    }
+
+    if (parseInt(roomData.roundTime) < 30) {
+      return setError("Minimum round time is 30 seconds");
     }
 
     setError("");
@@ -81,7 +85,7 @@ export default function CreateRoom({ onRoomCreated }) {
     setOpen(false);
     setRoomID("");
     setError("");
-    setRoomData({ name: "", numStocks: "15", roundTime: "8", maxPlayers: "5", initialMoney: "500000", numRounds: "25" });
+    setRoomData({ name: "", numStocks: "15", roundTime: "30", maxPlayers: "5", initialMoney: "500000", numRounds: "25" });
   };
 
   return (
